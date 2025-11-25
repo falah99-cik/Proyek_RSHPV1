@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class IsResepsionis
+class IsPerawat
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -19,9 +19,9 @@ class IsResepsionis
         $roleAktif = $user->roleAktif()->first();
         $role = $roleAktif->nama_role ?? null;
 
-        if ($role !== 'Resepsionis') {
+        if ($role !== 'Perawat') {
             return redirect('/')
-            ->with('error', 'Akses ditolak, Anda bukan Resepsionis.');
+            ->with('error', 'Akses ditolak, Anda bukan Perawat.');
         }
         return $next($request);
     }

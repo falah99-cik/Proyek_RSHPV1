@@ -10,8 +10,8 @@ class RasHewan extends Model
     protected $primaryKey = 'idras_hewan';
     public $timestamps = false;
 
-    public function jenis()
-    {
-        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan');
-    }
+    public function jenisHewan()
+{
+    return $this->belongsTo(\App\Models\JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+}
 }

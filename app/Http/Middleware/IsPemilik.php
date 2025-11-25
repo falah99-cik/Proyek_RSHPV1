@@ -3,25 +3,23 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class IsAdministrator
+class IsPemilik
 {
     public function handle($request, Closure $next)
     {
-        // User harus login
         if (!Auth::check()) {
             return redirect('/login');
         }
 
         $user = Auth::user();
-
         $roleAktif = $user->roleAktif()->first();
         $role = $roleAktif->nama_role ?? null;
 
-        if ($role !== 'Administrator') {
-            return redirect('/')->with('error', 'Anda tidak memiliki akses sebagai Administrator');
+        if ($role !== 'Pemilik') {
+            return redirect('/')
+                ->with('error', 'Akses ditolak, Anda bukan Pemilik.');
         }
 
         return $next($request);

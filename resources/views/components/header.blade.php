@@ -8,7 +8,7 @@
 
     <ul>
         <li class="{{ $current == 'home' ? 'active' : '' }}">
-            <a href="{{ url('/home') }}" aria-current="{{ $current == 'home' ? 'page' : '' }}">Home</a>
+            <a href="{{ url('/') }}">Home</a>
         </li>
 
         <li class="{{ $current == 'struktur' ? 'active' : '' }}">
@@ -16,7 +16,7 @@
         </li>
 
         <li class="{{ $current == 'layanan' ? 'active' : '' }}">
-            <a href="{{ url('/layanan') }}" aria-current="{{ $current == 'layanan' ? 'page' : '' }}">Layanan Umum</a>
+            <a href="{{ url('/layanan') }}">Layanan Umum</a>
         </li>
 
         <li class="{{ $current == 'visi' ? 'active' : '' }}">
@@ -24,7 +24,7 @@
         </li>
 
         <li>
-            <a href="{{ url('/login') }}" class="login">Login</a>
+            <a href="{{ url('/home') }}" class="login">Login</a>
         </li>
     </ul>
 </nav>

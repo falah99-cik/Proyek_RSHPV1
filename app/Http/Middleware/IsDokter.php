@@ -7,22 +7,23 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class IsResepsionis
+class IsDokter
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect('/login');
         }
-        
-        $user =Auth::user();
+
+        $user = Auth::user();
         $roleAktif = $user->roleAktif()->first();
         $role = $roleAktif->nama_role ?? null;
 
-        if ($role !== 'Resepsionis') {
+        if ($role !== 'Dokter') {
             return redirect('/')
-            ->with('error', 'Akses ditolak, Anda bukan Resepsionis.');
+                ->with('error', 'Akses ditolak, Anda bukan Dokter.');
         }
+
         return $next($request);
     }
 }
