@@ -38,7 +38,9 @@ Auth::routes();
 Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/jenis-hewan', [JenisHewanController::class, 'index']);
+    Route::get('/jenis-hewan', [JenisHewanController::class, 'index'])->name('admin.jenis_hewan.index');
+    Route::get('/jenis-hewan/create', [JenisHewanController::class, 'create'])->name('admin.jenis_hewan.create');
+    Route::post('/jenis-hewan/store', [JenisHewanController::class, 'store'])->name('admin.jenis_hewan.store');
     Route::get('/pemilik', [PemilikController::class, 'index']);
     Route::get('/ras-hewan', [RasHewanController::class, 'index']);
     Route::get('/kategori', [KategoriController::class, 'index']);
