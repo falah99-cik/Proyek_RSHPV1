@@ -62,7 +62,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
     Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
     Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
-    Route::get('/user_role', [UserRoleController::class, 'index']);
+    Route::get('/user-role', [UserRoleController::class, 'index'])->name('user_role.index');
+    Route::get('/user-role/create', [UserRoleController::class, 'create'])->name('user_role.create');
+    Route::post('/user-role/store', [UserRoleController::class, 'store'])->name('user_role.store');
 
 });
 
