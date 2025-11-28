@@ -54,7 +54,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/tindakan', [KodeTindakanTerapiController::class, 'index'])->name('tindakan.index');
     Route::get('/tindakan/create', [KodeTindakanTerapiController::class, 'create'])->name('tindakan.create');
     Route::post('/tindakan/store', [KodeTindakanTerapiController::class, 'store'])->name('tindakan.store');
-    Route::get('/pet', [PetController::class, 'index']);
+    Route::get('/pet', [PetController::class, 'index'])->name('pet.index');
+    Route::get('/pet/create', [PetController::class, 'create'])->name('pet.create');
+    Route::post('/pet/store', [PetController::class, 'store'])->name('pet.store');
     Route::get('/role', [RoleController::class, 'index']);
     Route::get('/user_role', [UserRoleController::class, 'index']);
 

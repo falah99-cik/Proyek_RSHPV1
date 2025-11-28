@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +10,8 @@ class RasHewan extends Model
     public $timestamps = false;
 
     public function jenisHewan()
-{
-    return $this->belongsTo(\App\Models\JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+    {
+        return $this->belongsTo(JenisHewan::class, 'idjenis_hewan', 'idjenis_hewan');
+    }
 }
-}
+
