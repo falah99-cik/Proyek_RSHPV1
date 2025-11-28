@@ -45,7 +45,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/ras-hewan', [RasHewanController::class, 'index'])->name('ras_hewan.index');
     Route::get('/ras-hewan/create', [RasHewanController::class, 'create'])->name('ras_hewan.create');
     Route::post('/ras-hewan/store', [RasHewanController::class, 'store'])->name('ras_hewan.store');
-    Route::get('/kategori', [KategoriController::class, 'index']);
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+    Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');
     Route::get('/kategori-klinis', [KategoriKlinisController::class, 'index']);
     Route::get('/tindakan', [KodeTindakanTerapiController::class, 'index']);
     Route::get('/pet', [PetController::class, 'index']);
