@@ -5,14 +5,22 @@ namespace App\Http\Controllers\admin;
 use App\Models\JenisHewan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 
 class JenisHewanController extends Controller
 {
-    public function index()
-    {
-        $jenisHewan = JenisHewan::all();
-        return view('admin.jenis_hewan.index', compact('jenisHewan'));
+    public function index(Request $request)
+{
+    $q = $request->input('q');
+    $query = DB::table('jenis_hewan');
+
+    if ($q) {
+        $query->where('nama_jenis_hewan', 'like', "%{$q}%");
     }
+    $jenis = $query->orderBy('idjenis_hewan', 'asc')->paginate(15);
+    return view('admin.jenis_hewan.index', compact('jenis', 'q'));
+}
+
 
     public function create()
     {
@@ -20,15 +28,41 @@ class JenisHewanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $this->validateJenisHewan($request);
+{
+    $request->validate([
+        'nama_jenis_hewan' => 'required|string|max:255',
+    ]);
 
-        $data = $this->createJenisHewan($request);
+    $nama = trim($request->nama_jenis_hewan);
 
-        JenisHewan::create($data);
+    DB::table('jenis_hewan')->insert([
+        'nama_jenis_hewan' => $nama
+    ]);
 
-        return redirect()->route('admin.jenis_hewan.index')->with('success', 'Data berhasil ditambahkan');
-    }
+    return redirect()->route('admin.jenis-hewan.index')->with('success', 'Jenis hewan dibuat.');
+}
+
+public function edit($id)
+{
+    $item = DB::table('jenis_hewan')->where('idjenis_hewan', $id)->first();
+    return view('admin.jenis_hewan.edit', compact('item'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate(['nama_jenis_hewan' => 'required|string|max:255']);
+    DB::table('jenis_hewan')->where('idjenis_hewan', $id)->update([
+        'nama_jenis_hewan' => trim($request->nama_jenis_hewan)
+    ]);
+    return redirect()->route('admin.jenis-hewan.index')->with('success','Berhasil diupdate.');
+}
+
+public function destroy($id)
+{
+    DB::table('jenis_hewan')->where('idjenis_hewan', $id)->delete();
+    return back()->with('success','Data dihapus.');
+}
+
 
     private function validateJenisHewan($request)
     {

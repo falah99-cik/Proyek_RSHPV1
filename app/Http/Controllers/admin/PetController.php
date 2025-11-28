@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pet;
 use App\Models\RasHewan;
 use App\Models\Pemilik;
+use Illuminate\Support\Facades\DB;
 
 class PetController extends Controller
 {
@@ -63,4 +64,39 @@ class PetController extends Controller
     {
         return ucwords(strtolower($t));
     }
+
+    public function rasByJenis($idjenis)
+    {
+        $ras = DB::table('ras_hewan')
+            ->where('idjenis_hewan', $idjenis)
+            ->orderBy('nama_ras')
+            ->get();
+
+        return response()->json($ras);
+    }
+
+    public function daftarPet()
+    {
+        $pets = DB::table('pet as p')
+            ->join('pemilik as pm', 'p.idpemilik', '=', 'pm.idpemilik')
+            ->join('user as u', 'pm.iduser', '=', 'u.iduser')
+            ->join('ras_hewan as r', 'p.idras_hewan', '=', 'r.idras_hewan')
+            ->select('p.*','u.nama as nama_pemilik','r.nama_ras')
+            ->paginate(15);
+
+        return view('admin.pet.index', compact('pets'));
+    }
+
+    public function statistikPetPerJenis()
+    {
+        $stats = DB::table('pet as p')
+            ->join('ras_hewan as r', 'p.idras_hewan', '=', 'r.idras_hewan')
+            ->join('jenis_hewan as j', 'r.idjenis_hewan', '=', 'j.idjenis_hewan')
+            ->select('j.nama_jenis_hewan', DB::raw('count(p.idpet) as total'))
+            ->groupBy('j.idjenis_hewan', 'j.nama_jenis_hewan')
+            ->get();
+
+        return view('admin.statistik.pet_per_jenis', compact('stats'));
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Models\RasHewan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 use App\Models\JenisHewan;
+use Illuminate\Support\Facades\DB;
 
 class RasHewanController extends Controller
 {
@@ -59,5 +60,16 @@ private function formatRas($text)
 {
     return ucwords(strtolower($text));
 }
+
+public function rasByJenis($idjenis)
+{
+    $ras = DB::table('ras_hewan')
+        ->where('idjenis_hewan', $idjenis)
+        ->orderBy('nama_ras')
+        ->get();
+
+    return response()->json($ras);
+}
+
 
 }
