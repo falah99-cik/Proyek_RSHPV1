@@ -5,8 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Models\KodeTindakanTerapi;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
-use app\Models\Kategori;
-use app\Models\KategoriKlinis;
+use App\Models\Kategori;
+use App\Models\KategoriKlinis;
 
 class KodeTindakanTerapiController extends Controller
 {

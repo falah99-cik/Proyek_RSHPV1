@@ -5,13 +5,13 @@ namespace App\Http\Controllers\admin;
 use App\Models\RasHewan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
-use app\Models\JenisHewan;
+use App\Models\JenisHewan;
 
 class RasHewanController extends Controller
 {
     public function index()
     {
-        $rasHewan = RasHewan::with('jenis')->get();
+        $rasHewan = RasHewan::with('jenisHewan')->get();
         return view('admin.ras_hewan.index', compact('rasHewan'));
     }
 

@@ -1,10 +1,10 @@
-@extends('layout.main')
+@extends('layouts.app')
 
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Daftar Jenis Hewan</h2>
-    <a href="{{ route('admin.jenis-hewan.create') }}" class="btn btn-primary">
+    <a href="{{ route('admin.jenis_hewan.create') }}" class="btn btn-primary">
         + Tambah Jenis Hewan
     </a>
 </div>
