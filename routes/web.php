@@ -35,14 +35,16 @@ Route::get('/logout', function () {
 
 Auth::routes();
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(function () {
 
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/jenis-hewan', [JenisHewanController::class, 'index'])->name('admin.jenis_hewan.index');
-    Route::get('/jenis-hewan/create', [JenisHewanController::class, 'create'])->name('admin.jenis_hewan.create');
-    Route::post('/jenis-hewan/store', [JenisHewanController::class, 'store'])->name('admin.jenis_hewan.store');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/jenis-hewan', [JenisHewanController::class, 'index'])->name('jenis_hewan.index');
+    Route::get('/jenis-hewan/create', [JenisHewanController::class, 'create'])->name('jenis_hewan.create');
+    Route::post('/jenis-hewan/store', [JenisHewanController::class, 'store'])->name('jenis_hewan.store');
     Route::get('/pemilik', [PemilikController::class, 'index']);
-    Route::get('/ras-hewan', [RasHewanController::class, 'index']);
+    Route::get('/ras-hewan', [RasHewanController::class, 'index'])->name('ras_hewan.index');
+    Route::get('/ras-hewan/create', [RasHewanController::class, 'create'])->name('ras_hewan.create');
+    Route::post('/ras-hewan/store', [RasHewanController::class, 'store'])->name('ras_hewan.store');
     Route::get('/kategori', [KategoriController::class, 'index']);
     Route::get('/kategori-klinis', [KategoriKlinisController::class, 'index']);
     Route::get('/tindakan', [KodeTindakanTerapiController::class, 'index']);
