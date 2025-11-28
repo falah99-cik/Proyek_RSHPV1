@@ -59,7 +59,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','isAdmin'])->group(fu
     Route::get('/pet', [PetController::class, 'index'])->name('pet.index');
     Route::get('/pet/create', [PetController::class, 'create'])->name('pet.create');
     Route::post('/pet/store', [PetController::class, 'store'])->name('pet.store');
-    Route::get('/role', [RoleController::class, 'index']);
+    Route::get('/role', [RoleController::class, 'index'])->name('role.index');
+    Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
+    Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
     Route::get('/user_role', [UserRoleController::class, 'index']);
 
 });
