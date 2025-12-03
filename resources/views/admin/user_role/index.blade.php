@@ -9,9 +9,7 @@
 
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end mb-0">
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            </li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">User Role</li>
         </ol>
     </div>
@@ -24,7 +22,7 @@
 
 <div class="container-fluid px-4 mt-4">
 
-    {{-- HEADER TITLE + BUTTON --}}
+    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">Daftar User Role</h4>
 
@@ -33,15 +31,14 @@
         </a>
     </div>
 
-    {{-- SUCCESS MESSAGE --}}
+    {{-- Alert --}}
     @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
-    {{-- CARD TABLE --}}
     <div class="card shadow-sm">
         <div class="card-body p-0">
 
@@ -53,40 +50,94 @@
                         <th>Email User</th>
                         <th>Role</th>
                         <th>Status</th>
+                        <th width="160px">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse ($roleUser as $ru)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $ru->user->nama }}</td>
-                            <td>{{ $ru->user->email }}</td>
-                            <td>{{ $ru->role->nama_role }}</td>
-                            <td class="text-center">
+                @forelse ($roleUser as $ru)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
 
-                                @if ($ru->status == 1)
-                                    <span class="badge bg-success">Aktif</span>
-                                @else
-                                    <span class="badge bg-secondary">Nonaktif</span>
-                                @endif
+                        <td>{{ $ru->user->nama }}</td>
+                        <td>{{ $ru->user->email }}</td>
 
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted py-3">
-                                Belum ada data user role.
-                            </td>
-                        </tr>
-                    @endforelse
+                        <td>{{ $ru->role->nama_role }}</td>
+
+                        <td class="text-center">
+                            @if ($ru->status == 1)
+                                <span class="badge bg-success">Aktif</span>
+                            @else
+                                <span class="badge bg-secondary">Nonaktif</span>
+                            @endif
+                        </td>
+
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+
+                                {{-- Edit --}}
+                                <a href="{{ route('admin.user_role.edit', $ru->idrole_user) }}"
+                                   class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+
+                                {{-- Delete --}}
+                                <button class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{ $ru->idrole_user }}">
+                                    <i class="bi bi-trash3"></i> Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    {{-- Modal Delete --}}
+                    <div class="modal fade" id="deleteModal{{ $ru->idrole_user }}" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    Hapus role <b>{{ $ru->role->nama_role }}</b> untuk user
+                                    <b>{{ $ru->user->nama }}</b>?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+                                    <form action="{{ route('admin.user_role.destroy', $ru->idrole_user) }}"
+                                          method="POST">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                @empty
+
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-3">
+                            Belum ada data user role.
+                        </td>
+                    </tr>
+
+                @endforelse
                 </tbody>
 
             </table>
 
         </div>
 
-        {{-- PAGINATION --}}
+        {{-- Pagination --}}
         @if(method_exists($roleUser, 'links'))
         <div class="card-footer">
             {{ $roleUser->links() }}

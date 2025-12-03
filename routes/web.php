@@ -95,6 +95,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/user-role', [UserRoleController::class, 'index'])->name('user_role.index');
     Route::get('/user-role/create', [UserRoleController::class, 'create'])->name('user_role.create');
     Route::post('/user-role/store', [UserRoleController::class, 'store'])->name('user_role.store');
+    Route::get('/user-role/{id}/edit', [UserRoleController::class, 'edit'])->name('user_role.edit');
+    Route::put('/user-role/{id}/update', [UserRoleController::class, 'update'])->name('user_role.update');
+    Route::delete('/user-role/{id}', [UserRoleController::class, 'destroy'])->name('user_role.destroy');
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
