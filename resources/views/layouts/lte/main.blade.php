@@ -14,7 +14,15 @@
     @include('layouts.lte.sidebar')
 
     <main class="app-main">
-        @yield('content')
+
+        <div class="app-content-header px-4 mt-3">
+            @yield('content-header')
+        </div>
+
+        <div class="app-content px-4">
+            @yield('content')
+        </div>
+
     </main>
 
 </div>

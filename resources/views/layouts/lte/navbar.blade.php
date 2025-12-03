@@ -1,3 +1,4 @@
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary app-header-fixed">
 <nav class="app-header navbar navbar-expand bg-body">
     <div class="container-fluid">
 
@@ -63,3 +64,10 @@
 
     </div>
 </nav>
+</body>
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
