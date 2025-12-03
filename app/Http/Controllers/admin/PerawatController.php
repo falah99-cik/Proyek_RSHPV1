@@ -19,10 +19,15 @@ class PerawatController extends Controller
     }
 
     public function create()
-    {
-        $user = DB::table('user')->get();
-        return view('admin.perawat.create', compact('user'));
-    }
+{
+    $user = DB::table('user')
+        ->join('role_user', 'role_user.iduser', '=', 'user.iduser')
+        ->where('role_user.idrole', 3)
+        ->select('user.*')
+        ->get();
+
+    return view('admin.perawat.create', compact('user'));
+}
 
     public function store(Request $request)
     {
@@ -46,12 +51,17 @@ class PerawatController extends Controller
     }
 
     public function edit($id)
-    {
-        $perawat = DB::table('perawat')->where('id_perawat', $id)->first();
-        $user = DB::table('user')->get();
+{
+    $perawat = DB::table('perawat')->where('id_perawat', $id)->first();
 
-        return view('admin.perawat.edit', compact('perawat', 'user'));
-    }
+    $user = DB::table('user')
+        ->join('role_user', 'role_user.iduser', '=', 'user.iduser')
+        ->where('role_user.idrole', 3)
+        ->select('user.*')
+        ->get();
+
+    return view('admin.perawat.edit', compact('perawat', 'user'));
+}
 
     public function update(Request $request, $id)
     {

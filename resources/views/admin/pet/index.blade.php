@@ -63,7 +63,15 @@
                             <td>{{ $p->tanggal_lahir }}</td>
                             <td>{{ $p->warna_tanda }}</td>
 
-                            <td>{{ $p->jenis_kelamin == 'J' ? 'Jantan' : 'Betina' }}</td>
+                            <td class="text-center">
+    @if($p->jenis_kelamin == 'J')
+        <span class="badge bg-primary">Jantan</span>
+    @elseif($p->jenis_kelamin == 'B')
+        <span class="badge bg-pink" style="background-color:#d63384;">Betina</span>
+    @else
+        <span class="badge bg-secondary">-</span>
+    @endif
+</td>
 
                             <td>{{ $p->pemilik->user->nama ?? '-' }}</td>
 
