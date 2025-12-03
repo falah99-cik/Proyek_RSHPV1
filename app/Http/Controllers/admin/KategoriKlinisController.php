@@ -4,15 +4,25 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\KategoriKlinis;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KategoriKlinisController extends Controller
 {
-    public function index()
-{
-    $kategoriKlinis = KategoriKlinis::all();
-    return view('admin.kategori_klinis.index', compact('kategoriKlinis'));
-}
+    public function index(Request $request)
+    {
+        $q = $request->input('q');
+
+        $query = DB::table('kategori_klinis');
+
+        if ($q) {
+            $query->where('nama_kategori_klinis', 'like', "%{$q}%");
+        }
+
+        $kategoriKlinis = $query->orderBy('idkategori_klinis', 'asc')->paginate(15);
+
+        return view('admin.kategori_klinis.index', compact('kategoriKlinis', 'q'));
+    }
 
 public function create()
 {
@@ -30,6 +40,37 @@ public function store(Request $request)
     return redirect()->route('admin.kategori_klinis.index')
         ->with('success', 'Kategori klinis berhasil ditambahkan');
 }
+
+    public function edit($id)
+    {
+        $kategoriKlinis = KategoriKlinis::findOrFail($id);
+
+        return view('admin.kategori_klinis.edit', compact('kategoriKlinis'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validateKategoriKlinisUpdate($request, $id);
+
+        $kategoriKlinis = KategoriKlinis::findOrFail($id);
+
+        $kategoriKlinis->update([
+            'nama_kategori_klinis' => $this->formatKategoriKlinis($request->nama_kategori_klinis)
+        ]);
+
+        return redirect()
+            ->route('admin.kategori_klinis.index')
+            ->with('success', 'Kategori klinis berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        KategoriKlinis::findOrFail($id)->delete();
+
+        return redirect()
+            ->route('admin.kategori_klinis.index')
+            ->with('success', 'Kategori klinis berhasil dihapus.');
+    }
 
 private function validateKategoriKlinis($request)
 {

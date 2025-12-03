@@ -63,6 +63,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/kategori-klinis', [KategoriKlinisController::class, 'index'])->name('kategori_klinis.index');
     Route::get('/kategori-klinis/create', [KategoriKlinisController::class, 'create'])->name('kategori_klinis.create');
     Route::post('/kategori-klinis/store', [KategoriKlinisController::class, 'store'])->name('kategori_klinis.store');
+    Route::get('/kategori-klinis/{id}/edit', [KategoriKlinisController::class, 'edit'])->name('kategori_klinis.edit');
+    Route::put('/kategori-klinis/{id}', [KategoriKlinisController::class, 'update'])->name('kategori_klinis.update');
+    Route::delete('/kategori-klinis/{id}', [KategoriKlinisController::class, 'destroy'])->name('kategori_klinis.destroy');
     Route::get('/tindakan', [KodeTindakanTerapiController::class, 'index'])->name('tindakan.index');
     Route::get('/tindakan/create', [KodeTindakanTerapiController::class, 'create'])->name('tindakan.create');
     Route::post('/tindakan/store', [KodeTindakanTerapiController::class, 'store'])->name('tindakan.store');

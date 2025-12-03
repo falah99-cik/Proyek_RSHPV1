@@ -46,7 +46,7 @@
                 <input 
                     type="text" 
                     name="q" 
-                    value="{{ $q }}" 
+                    value="{{ $q }}"
                     class="form-control me-2"
                     placeholder="Cari jenis hewan..."
                 >
@@ -60,80 +60,51 @@
         <div class="card-body p-0">
             <table class="table table-striped table-hover mb-0">
                 <thead class="table-light">
-    <tr class="text-center">
-        <th width="60">No</th>
-        <th>Nama Jenis Hewan</th>
-        <th width="150">Aksi</th>
-    </tr>
-</thead>
+                    <tr class="text-center">
+                        <th width="60">No</th>
+                        <th>Nama Jenis Hewan</th>
+                        <th width="160">Aksi</th>
+                    </tr>
+                </thead>
 
-<tbody>
-@forelse ($jenis as $item)
-    <tr>
-        <td class="text-center">
-            {{ $loop->iteration + ($jenis->currentPage() - 1) * $jenis->perPage() }}
-        </td>
+                <tbody>
+                    @forelse ($jenis as $item)
+                        <tr>
+                            <td class="text-center">
+                                {{ $loop->iteration + ($jenis->currentPage() - 1) * $jenis->perPage() }}
+                            </td>
 
-        <td>{{ $item->nama_jenis_hewan }}</td>
+                            <td>{{ $item->nama_jenis_hewan }}</td>
 
-        <td class="text-center">
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
 
-            {{-- Tombol Edit --}}
-            <a href="{{ route('admin.jenis_hewan.edit', $item->idjenis_hewan) }}" 
-               class="btn btn-sm btn-warning">
-                <i class="bi bi-pencil-square"></i>
-            </a>
+                                    {{-- Edit --}}
+                                    <a href="{{ route('admin.jenis_hewan.edit', $item->idjenis_hewan) }}" 
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
 
-            {{-- Tombol Delete (Modal) --}}
-            <button class="btn btn-sm btn-danger" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#deleteModal{{ $item->idjenis_hewan }}">
-                <i class="bi bi-trash"></i>
-            </button>
+                                    {{-- Delete (trigger modal) --}}
+                                    <button 
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal{{ $item->idjenis_hewan }}">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
 
-        </td>
-    </tr>
+                                </div>
+                            </td>
+                        </tr>
 
-    {{-- Modal Delete --}}
-    <div class="modal fade" id="deleteModal{{ $item->idjenis_hewan }}" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Konfirmasi Hapus</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menghapus 
-                    <b>{{ $item->nama_jenis_hewan }}</b>?
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-
-                    <form action="{{ route('admin.jenis_hewan.destroy', $item->idjenis_hewan) }}" 
-                          method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger">Hapus</button>
-                    </form>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-@empty
-    <tr>
-        <td colspan="3" class="text-center text-muted py-3">
-            Belum ada data.
-        </td>
-    </tr>
-@endforelse
-</tbody>
-
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-3">
+                                Belum ada data.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
             </table>
         </div>
 
@@ -143,7 +114,40 @@
         </div>
 
     </div>
-
 </div>
+
+{{-- MODALS DELETE --}}
+@foreach ($jenis as $item)
+<div class="modal fade" id="deleteModal{{ $item->idjenis_hewan }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus
+                <b>{{ $item->nama_jenis_hewan }}</b>?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Batal
+                </button>
+
+                <form action="{{ route('admin.jenis_hewan.destroy', $item->idjenis_hewan) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-danger">Hapus</button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@endforeach
 
 @endsection

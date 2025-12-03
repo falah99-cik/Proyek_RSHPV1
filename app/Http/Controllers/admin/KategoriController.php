@@ -4,15 +4,25 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\Kategori;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KategoriController extends Controller
 {
-    public function index()
+public function index(Request $request)
 {
-    $kategori = Kategori::all();
-    return view('admin.kategori.index', compact('kategori'));
+    $q = $request->input('q');
+
+    $kategori = DB::table('kategori')
+        ->when($q, function ($query) use ($q) {
+            $query->where('nama_kategori', 'LIKE', "%{$q}%");
+        })
+        ->orderBy('idkategori', 'asc')
+        ->paginate(15);
+
+    return view('admin.kategori.index', compact('kategori', 'q'));
 }
+
 
 public function create()
 {
