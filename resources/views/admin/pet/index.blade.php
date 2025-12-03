@@ -8,9 +8,7 @@
 
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end mb-0">
-            <li class="breadcrumb-item">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-            </li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">Pet</li>
         </ol>
     </div>
@@ -46,12 +44,13 @@
                     <tr>
                         <th width="60">No</th>
                         <th>Nama</th>
-                        <th>Tanggal Lahir</th>
+                        <th>Tgl Lahir</th>
                         <th>Warna/Tanda</th>
                         <th>Jenis Kelamin</th>
                         <th>Pemilik</th>
                         <th>Ras</th>
                         <th>Jenis Hewan</th>
+                        <th width="160">Aksi</th>
                     </tr>
                 </thead>
 
@@ -64,20 +63,66 @@
                             <td>{{ $p->tanggal_lahir }}</td>
                             <td>{{ $p->warna_tanda }}</td>
 
-                            <td>
-                                {{ $p->jenis_kelamin == 'J' ? 'Jantan' : 'Betina' }}
-                            </td>
+                            <td>{{ $p->jenis_kelamin == 'J' ? 'Jantan' : 'Betina' }}</td>
 
                             <td>{{ $p->pemilik->user->nama ?? '-' }}</td>
 
                             <td>{{ $p->ras->nama_ras }}</td>
 
                             <td>{{ $p->ras->jenisHewan->nama_jenis_hewan }}</td>
+
+                            {{-- ACTION --}}
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    {{-- EDIT --}}
+                                    <a href="{{ route('admin.pet.edit', $p->idpet) }}"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+
+                                    {{-- DELETE --}}
+                                    <button class="btn btn-danger btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal{{ $p->idpet }}">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+
+                                </div>
+                            </td>
                         </tr>
+
+                        {{-- MODAL DELETE --}}
+                        <div class="modal fade" id="deleteModal{{ $p->idpet }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        Yakin ingin menghapus pet <b>{{ $p->nama }}</b>?
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+                                        <form action="{{ route('admin.pet.destroy', $p->idpet) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
 
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-3">
+                            <td colspan="9" class="text-center text-muted py-3">
                                 Belum ada data pet.
                             </td>
                         </tr>
@@ -88,7 +133,7 @@
 
         </div>
 
-        {{-- PAGINATION (IF AVAILABLE) --}}
+        {{-- PAGINATION --}}
         @if(method_exists($pet, 'links'))
         <div class="card-footer">
             {{ $pet->links() }}

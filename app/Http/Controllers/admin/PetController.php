@@ -36,6 +36,49 @@ class PetController extends Controller
             ->with('success', 'Pet berhasil ditambahkan');
     }
 
+    public function edit($id)
+{
+    $pet = Pet::findOrFail($id);
+    $ras = RasHewan::with('jenisHewan')->get();
+    $pemilik = Pemilik::with('user')->get();
+
+    return view('admin.pet.edit', compact('pet', 'ras', 'pemilik'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required|min:3',
+        'tanggal_lahir' => 'required|date',
+        'warna_tanda' => 'required|min:3',
+        'jenis_kelamin' => 'required|in:J,B',
+        'idras_hewan' => 'required|exists:ras_hewan,idras_hewan',
+        'idpemilik' => 'required|exists:pemilik,idpemilik',
+    ]);
+
+    $pet = Pet::findOrFail($id);
+
+    $pet->update([
+        'nama' => ucwords(strtolower($request->nama)),
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'warna_tanda' => ucwords(strtolower($request->warna_tanda)),
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'idras_hewan' => $request->idras_hewan,
+        'idpemilik' => $request->idpemilik,
+    ]);
+
+    return redirect()->route('admin.pet.index')
+                     ->with('success', 'Pet berhasil diperbarui.');
+}
+
+public function destroy($id)
+{
+    Pet::findOrFail($id)->delete();
+
+    return redirect()->route('admin.pet.index')
+                     ->with('success', 'Pet berhasil dihapus.');
+}
+
     private function validatePet($request)
     {
         $request->validate([

@@ -77,6 +77,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/statistik/pet-per-jenis', [PetController::class, 'statistikPetPerJenis'])->name('statistik.pet.per.jenis');
     Route::get('/pet/create', [PetController::class, 'create'])->name('pet.create');
     Route::post('/pet/store', [PetController::class, 'store'])->name('pet.store');
+    Route::get('/pet/{id}/edit', [PetController::class, 'edit'])->name('pet.edit');
+    Route::put('/pet/{id}/update', [PetController::class, 'update'])->name('pet.update');
+    Route::delete('/pet/{id}', [PetController::class, 'destroy'])->name('pet.destroy');
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
     Route::get('/role/create', [RoleController::class, 'create'])->name('role.create');
     Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
