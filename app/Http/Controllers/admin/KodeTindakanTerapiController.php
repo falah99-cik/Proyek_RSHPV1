@@ -37,6 +37,47 @@ public function store(Request $request)
         ->with('success', 'Tindakan terapi berhasil ditambahkan');
 }
 
+public function edit($id)
+{
+    $tindakan = KodeTindakanTerapi::findOrFail($id);
+
+    $kategori = Kategori::all();
+    $kategoriKlinis = KategoriKlinis::all();
+
+    return view('admin.tindakan.edit', compact('tindakan', 'kategori', 'kategoriKlinis'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'kode' => 'required',
+        'deskripsi_tindakan_terapi' => 'required',
+        'idkategori' => 'required|exists:kategori,idkategori',
+        'idkategori_klinis' => 'required|exists:kategori_klinis,idkategori_klinis',
+    ]);
+
+    $tindakan = KodeTindakanTerapi::findOrFail($id);
+
+    $tindakan->update([
+        'kode' => $request->kode,
+        'deskripsi_tindakan_terapi' => $request->deskripsi_tindakan_terapi,
+        'idkategori' => $request->idkategori,
+        'idkategori_klinis' => $request->idkategori_klinis,
+    ]);
+
+    return redirect()->route('admin.tindakan.index')
+                     ->with('success', 'Tindakan berhasil diperbarui.');
+}
+
+public function destroy($id)
+{
+    $t = KodeTindakanTerapi::findOrFail($id);
+    $t->delete();
+
+    return redirect()->route('admin.tindakan.index')
+                     ->with('success', 'Data tindakan berhasil dihapus.');
+}
+
 private function validateTindakan($request)
 {
     $request->validate([

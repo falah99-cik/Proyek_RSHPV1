@@ -75,6 +75,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/tindakan', [KodeTindakanTerapiController::class, 'index'])->name('tindakan.index');
     Route::get('/tindakan/create', [KodeTindakanTerapiController::class, 'create'])->name('tindakan.create');
     Route::post('/tindakan/store', [KodeTindakanTerapiController::class, 'store'])->name('tindakan.store');
+    Route::get('/tindakan/{id}/edit', [KodeTindakanTerapiController::class, 'edit'])->name('tindakan.edit');
+    Route::put('/tindakan/{id}/update', [KodeTindakanTerapiController::class, 'update'])->name('tindakan.update');
+    Route::delete('/tindakan/{id}/destroy', [KodeTindakanTerapiController::class, 'destroy'])->name('tindakan.destroy');
     Route::get('/pet', [PetController::class, 'index'])->name('pet.index');
     Route::get('/ras-by-jenis/{idjenis}', [PetController::class, 'rasByJenis'])->name('ras.by.jenis');
     Route::get('/statistik/pet-per-jenis', [PetController::class, 'statistikPetPerJenis'])->name('statistik.pet.per.jenis');
