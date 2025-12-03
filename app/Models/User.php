@@ -24,4 +24,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'role_user', 'iduser', 'idrole')
             ->wherePivot('status', 1);
     }
+
+    public function dokter()
+{
+    return $this->hasOne(Dokter::class, 'id_user', 'iduser');
+}
+
+public function perawat()
+{
+    return $this->hasOne(Perawat::class, 'id_user', 'iduser');
+}
 }

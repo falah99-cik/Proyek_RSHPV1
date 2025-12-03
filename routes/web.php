@@ -12,6 +12,8 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\UserRoleController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PemilikController;
+use App\Http\Controllers\admin\DokterController;
+use App\Http\Controllers\admin\PerawatController;
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\dokter\DokterRekamMedisController;
 use App\Http\Controllers\dokter\DokterDashboardController;
@@ -104,6 +106,18 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
+    Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
+    Route::post('/dokter/store', [DokterController::class, 'store'])->name('dokter.store');
+    Route::get('/dokter/edit/{id}', [DokterController::class, 'edit'])->name('dokter.edit');
+    Route::post('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
+    Route::get('/dokter/delete/{id}', [DokterController::class, 'delete'])->name('dokter.delete');
+    Route::get('/perawat', [PerawatController::class, 'index'])->name('perawat.index');
+    Route::get('/perawat/create', [PerawatController::class, 'create'])->name('perawat.create');
+    Route::post('/perawat/store', [PerawatController::class, 'store'])->name('perawat.store');
+    Route::get('/perawat/edit/{id}', [PerawatController::class, 'edit'])->name('perawat.edit');
+    Route::post('/perawat/update/{id}', [PerawatController::class, 'update'])->name('perawat.update');
+    Route::get('/perawat/delete/{id}', [PerawatController::class, 'delete'])->name('perawat.delete');
 });
 
 Route::middleware(['auth', 'isDokter'])->group(function () {
