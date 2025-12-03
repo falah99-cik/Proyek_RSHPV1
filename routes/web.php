@@ -51,6 +51,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
     Route::get('/pemilik/create', [PemilikController::class, 'create'])->name('pemilik.create');
     Route::post('/pemilik/store', [PemilikController::class, 'store'])->name('pemilik.store');
+    Route::get('/pemilik/{id}/edit', [PemilikController::class, 'edit'])->name('pemilik.edit');
+    Route::put('/pemilik/{id}/update', [PemilikController::class, 'update'])->name('pemilik.update');
+    Route::delete('/pemilik/{id}', [PemilikController::class, 'destroy'])->name('pemilik.destroy');
     Route::get('/ras-hewan', [RasHewanController::class, 'index'])->name('ras_hewan.index');
     Route::get('/ras-hewan/create', [RasHewanController::class, 'create'])->name('ras_hewan.create');
     Route::post('/ras-hewan/store', [RasHewanController::class, 'store'])->name('ras_hewan.store');

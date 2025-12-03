@@ -28,7 +28,7 @@
         </a>
     </div>
 
-    {{-- ALERT SUCCESS --}}
+    {{-- Alert Success --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -43,11 +43,12 @@
             <table class="table table-striped table-hover mb-0">
                 <thead class="table-light text-center">
                     <tr>
-                        <th width="60px">No</th>
+                        <th width="60">No</th>
                         <th>Nama Pemilik</th>
                         <th>Nomor WA</th>
                         <th>Alamat</th>
                         <th>Email User</th>
+                        <th width="160">Aksi</th>
                     </tr>
                 </thead>
 
@@ -59,10 +60,65 @@
                             <td>{{ $p->no_wa }}</td>
                             <td>{{ $p->alamat }}</td>
                             <td>{{ $p->user->email ?? '-' }}</td>
+
+                            {{-- ACTION BUTTONS --}}
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    {{-- EDIT --}}
+                                    <a href="{{ route('admin.pemilik.edit', $p->idpemilik) }}" 
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+
+                                    {{-- DELETE --}}
+                                    <button class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal{{ $p->idpemilik }}">
+                                        <i class="bi bi-trash"></i> Hapus
+                                    </button>
+
+                                </div>
+                            </td>
                         </tr>
+
+                        {{-- MODAL DELETE --}}
+                        <div class="modal fade" id="deleteModal{{ $p->idpemilik }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        Apakah Anda yakin ingin menghapus pemilik  
+                                        <b>{{ $p->user->nama ?? '-' }}</b>?
+                                    </div>
+
+                                    <div class="modal-footer">
+
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Batal
+                                        </button>
+
+                                        <form action="{{ route('admin.pemilik.destroy', $p->idpemilik) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button class="btn btn-danger">Hapus</button>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-3">
+                            <td colspan="6" class="text-center text-muted py-3">
                                 Belum ada data pemilik.
                             </td>
                         </tr>
@@ -73,7 +129,6 @@
 
         </div>
 
-        {{-- Pagination jika pakai paginate --}}
         @if(method_exists($pemilik, 'links'))
         <div class="card-footer">
             {{ $pemilik->links() }}
