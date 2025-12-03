@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\JenisHewan;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class JenisHewanController extends Controller

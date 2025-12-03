@@ -21,7 +21,7 @@ use App\Http\Controllers\resepsionis\ResepsionisDashboardController;
 use App\Http\Controllers\site\SiteController;
 use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/', [SiteController::class, 'home'])->name('home');
+Route::get('/', [SiteController::class, 'home'])->name('site.home');
 Route::get('/layanan', [SiteController::class, 'layanan'])->name('layanan');
 Route::get('/struktur', [SiteController::class, 'struktur'])->name('struktur');
 Route::get('/visi', [SiteController::class, 'visi'])->name('visi');
@@ -95,6 +95,44 @@ Route::middleware(['auth', 'isResepsionis'])->group(function () {
         ->name('resepsionis.dashboard');
 });
 
-Auth::routes();
+Route::middleware(['auth'])->group(function () {
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', function () {
+        return view('auth.lockscreen');
+    })->name('lockscreen');
+
+    Route::post('/unlock', function () {
+
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/login')->withErrors(['login' => 'Session expired, silakan login kembali.']);
+        }
+
+        if (!\Hash::check(request('password'), $user->password)) {
+            return back()->withErrors(['password' => 'Password salah!']);
+        }
+
+        $role = $user->roleAktif()->first()?->nama_role;
+
+        switch ($role) {
+            case 'Administrator':
+                return redirect('/admin/dashboard');
+
+            case 'Dokter':
+                return redirect('/dokter/dashboard');
+
+            case 'Perawat':
+                return redirect('/perawat/dashboard');
+
+            case 'Resepsionis':
+                return redirect('/resepsionis/dashboard');
+
+            case 'Pemilik':
+                return redirect('/pemilik/dashboard');
+        }
+
+        return redirect('/'); // fallback
+    })->name('unlock');
+
+});

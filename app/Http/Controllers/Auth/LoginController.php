@@ -36,7 +36,7 @@ class LoginController extends Controller
                 return redirect('/pemilik/dashboard');
 
             default:
-                return redirect('/home');
+                return redirect('/lockscreen');
         }
     }
 
