@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\JenisHewan;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\JenisHewan;
 
 class JenisHewanController extends Controller
 {
     public function index(Request $request)
-{
-    $q = $request->input('q');
-    $query = DB::table('jenis_hewan');
+    {
+        $q = $request->input('q');
 
-    if ($q) {
-        $query->where('nama_jenis_hewan', 'like', "%{$q}%");
+        $query = DB::table('jenis_hewan');
+
+        if ($q) {
+            $query->where('nama_jenis_hewan', 'like', "%{$q}%");
+        }
+
+        $jenis = $query->orderBy('idjenis_hewan')->paginate(15);
+
+        return view('admin.jenis_hewan.index', compact('jenis', 'q'));
     }
-    $jenis = $query->orderBy('idjenis_hewan', 'asc')->paginate(15);
-    return view('admin.jenis_hewan.index', compact('jenis', 'q'));
-}
-
 
     public function create()
     {
@@ -28,62 +30,70 @@ class JenisHewanController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'nama_jenis_hewan' => 'required|string|max:255',
-    ]);
-
-    $nama = trim($request->nama_jenis_hewan);
-
-    DB::table('jenis_hewan')->insert([
-        'nama_jenis_hewan' => $nama
-    ]);
-
-    return redirect()->route('admin.jenis-hewan.index')->with('success', 'Jenis hewan dibuat.');
-}
-
-public function edit($id)
-{
-    $item = DB::table('jenis_hewan')->where('idjenis_hewan', $id)->first();
-    return view('admin.jenis_hewan.edit', compact('item'));
-}
-
-public function update(Request $request, $id)
-{
-    $request->validate(['nama_jenis_hewan' => 'required|string|max:255']);
-    DB::table('jenis_hewan')->where('idjenis_hewan', $id)->update([
-        'nama_jenis_hewan' => trim($request->nama_jenis_hewan)
-    ]);
-    return redirect()->route('admin.jenis-hewan.index')->with('success','Berhasil diupdate.');
-}
-
-public function destroy($id)
-{
-    DB::table('jenis_hewan')->where('idjenis_hewan', $id)->delete();
-    return back()->with('success','Data dihapus.');
-}
-
-
-    private function validateJenisHewan($request)
     {
-        $request->validate([
-        'nama_jenis_hewan' => 'required|min:3|unique:jenis_hewan,nama_jenis_hewan'
-    ], [
-        'nama_jenis_hewan.required' => 'Nama jenis hewan wajib diisi',
-        'nama_jenis_hewan.min' => 'Minimal 3 karakter',
-        'nama_jenis_hewan.unique' => 'Data sudah ada'
-    ]);
+        $this->validateJenis($request);
+
+        $data = $this->buildJenisData($request);
+
+        DB::table('jenis_hewan')->insert($data);
+
+        return redirect()
+            ->route('admin.jenis_hewan.index')
+            ->with('success', 'Jenis hewan berhasil ditambahkan.');
     }
 
-    private function createJenisHewan($request)
-{
-    return [
-        'nama_jenis_hewan' => $this->formatNamaJenisHewan($request->nama_jenis_hewan)
-    ];
-}
+    public function edit($id)
+    {
+        $jenis = JenisHewan::findOrFail($id);
+        return view('admin.jenis_hewan.edit', compact('jenis'));
+    }
 
-private function formatNamaJenisHewan($nama)
-{
-    return ucwords(strtolower($nama));
-}
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_jenis_hewan' => 'required|min:3'
+        ]);
+
+        $jenis = JenisHewan::findOrFail($id);
+
+        $jenis->update(
+            $this->buildJenisData($request)
+        );
+
+        return redirect()
+            ->route('admin.jenis_hewan.index')
+            ->with('success', 'Jenis hewan berhasil diperbarui.');
+    }
+
+    public function destroy($id)
+    {
+        JenisHewan::findOrFail($id)->delete();
+
+        return redirect()
+            ->route('admin.jenis_hewan.index')
+            ->with('success', 'Jenis hewan berhasil dihapus.');
+    }
+
+    private function validateJenis($request)
+    {
+        $request->validate([
+            'nama_jenis_hewan' => 'required|min:3|unique:jenis_hewan,nama_jenis_hewan'
+        ], [
+            'nama_jenis_hewan.required' => 'Nama jenis hewan wajib diisi.',
+            'nama_jenis_hewan.min'      => 'Minimal 3 karakter.',
+            'nama_jenis_hewan.unique'   => 'Jenis hewan sudah terdaftar.'
+        ]);
+    }
+
+    private function buildJenisData($request)
+    {
+        return [
+            'nama_jenis_hewan' => $this->formatJenisName($request->nama_jenis_hewan)
+        ];
+    }
+
+    private function formatJenisName($value)
+    {
+        return ucwords(strtolower(trim($value)));
+    }
 }

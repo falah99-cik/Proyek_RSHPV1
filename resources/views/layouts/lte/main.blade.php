@@ -23,6 +23,8 @@
             @yield('content')
         </div>
 
+        @include('layouts.lte.footer')
+
     </main>
 
 </div>

@@ -45,6 +45,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/jenis-hewan', [JenisHewanController::class, 'index'])->name('jenis_hewan.index');
     Route::get('/jenis-hewan/create', [JenisHewanController::class, 'create'])->name('jenis_hewan.create');
     Route::post('/jenis-hewan/store', [JenisHewanController::class, 'store'])->name('jenis_hewan.store');
+    Route::get('/jenis-hewan/{id}/edit', [JenisHewanController::class, 'edit'])->name('jenis_hewan.edit');
+    Route::put('/jenis-hewan/{id}/update', [JenisHewanController::class, 'update'])->name('jenis_hewan.update');
+    Route::delete('/jenis-hewan/{id}/delete', [JenisHewanController::class, 'destroy'])->name('jenis_hewan.destroy');
     Route::get('/pemilik', [PemilikController::class, 'index'])->name('pemilik.index');
     Route::get('/pemilik/create', [PemilikController::class, 'create'])->name('pemilik.create');
     Route::post('/pemilik/store', [PemilikController::class, 'store'])->name('pemilik.store');
