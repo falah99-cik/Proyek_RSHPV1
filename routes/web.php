@@ -57,6 +57,9 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/ras-hewan', [RasHewanController::class, 'index'])->name('ras_hewan.index');
     Route::get('/ras-hewan/create', [RasHewanController::class, 'create'])->name('ras_hewan.create');
     Route::post('/ras-hewan/store', [RasHewanController::class, 'store'])->name('ras_hewan.store');
+    Route::get('/ras-hewan/{id}/edit', [RasHewanController::class, 'edit'])->name('ras_hewan.edit');
+    Route::put('/ras-hewan/{id}/update', [RasHewanController::class, 'update'])->name('ras_hewan.update');
+    Route::delete('/ras-hewan/{id}/delete', [RasHewanController::class, 'destroy'])->name('ras_hewan.destroy');
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
     Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
     Route::post('/kategori/store', [KategoriController::class, 'store'])->name('kategori.store');

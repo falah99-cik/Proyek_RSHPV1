@@ -4,17 +4,33 @@ namespace App\Http\Controllers\admin;
 
 use App\Models\RasHewan;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Models\JenisHewan;
 use Illuminate\Support\Facades\DB;
 
 class RasHewanController extends Controller
 {
-    public function index()
-    {
-        $rasHewan = RasHewan::with('jenisHewan')->get();
-        return view('admin.ras_hewan.index', compact('rasHewan'));
-    }
+    public function index(Request $request)
+{
+    $q = $request->q;
+
+    $rasHewan = RasHewan::with('jenisHewan')
+        ->when($q, function($query) use ($q) {
+            $query->where('nama_ras', 'like', "%$q%")
+                  ->orWhereHas('jenisHewan', function($q2) use ($q) {
+                      $q2->where('nama_jenis_hewan', 'like', "%$q%");
+                  });
+        })
+        ->orderBy('idjenis_hewan')
+        ->orderBy('nama_ras')
+        ->get();
+
+    $grouped = $rasHewan->groupBy(fn($item) => $item->jenisHewan->nama_jenis_hewan);
+
+    return view('admin.ras_hewan.index', compact('grouped', 'q'));
+}
+
+
 
     public function create()
 {
@@ -33,6 +49,41 @@ public function store(Request $request)
 
     return redirect()->route('admin.ras_hewan.index')
         ->with('success', 'Ras hewan berhasil ditambahkan');
+}
+
+public function edit($id)
+{
+    $ras = RasHewan::findOrFail($id);
+    $jenisHewan = JenisHewan::all();
+
+    return view('admin.ras_hewan.edit', compact('ras', 'jenisHewan'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama_ras' => 'required|min:3',
+        'idjenis_hewan' => 'required|exists:jenis_hewan,idjenis_hewan'
+    ]);
+
+    $ras = RasHewan::findOrFail($id);
+
+    $ras->update([
+        'nama_ras' => ucwords(strtolower($request->nama_ras)),
+        'idjenis_hewan' => $request->idjenis_hewan
+    ]);
+
+    return redirect()->route('admin.ras_hewan.index')
+                     ->with('success', 'Ras hewan berhasil diperbarui.');
+}
+
+public function destroy($id)
+{
+    $ras = RasHewan::findOrFail($id);
+    $ras->delete();
+
+    return redirect()->route('admin.ras_hewan.index')
+                     ->with('success', 'Ras hewan berhasil dihapus.');
 }
 
 private function validateRasHewan($request)
