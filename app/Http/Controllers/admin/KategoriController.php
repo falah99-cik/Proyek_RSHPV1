@@ -31,6 +31,37 @@ public function store(Request $request)
         ->with('success', 'Kategori berhasil ditambahkan');
 }
 
+public function edit($id)
+{
+    $kategori = Kategori::findOrFail($id);
+    return view('admin.kategori.edit', compact('kategori'));
+}
+
+public function update(Request $request, $id)
+{
+    $kategori = Kategori::findOrFail($id);
+
+    $this->validateKategori($request);
+
+    $data = $this->createKategori($request);
+
+    $kategori->update($data);
+
+    return redirect()->route('admin.kategori.index')
+        ->with('success', 'Kategori berhasil diupdate');
+}
+
+public function destroy($id)
+{
+    $kategori = Kategori::findOrFail($id);
+    $kategori->delete();
+
+    return redirect()->route('admin.kategori.index')
+        ->with('success', 'Kategori berhasil dihapus');
+}
+
+
+
 private function validateKategori($request)
 {
     $request->validate([
