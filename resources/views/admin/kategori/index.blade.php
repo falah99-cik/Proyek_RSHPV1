@@ -1,13 +1,15 @@
 @extends('layouts.lte.main')
 
 @section('content-header')
-<div class="row">
+<div class="row align-items-center">
     <div class="col-sm-6">
         <h3 class="mb-0">Kategori</h3>
     </div>
     <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-end">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
             <li class="breadcrumb-item active">Kategori</li>
         </ol>
     </div>
@@ -18,6 +20,7 @@
 
 <div class="container-fluid px-4 mt-4">
 
+    {{-- Header Title + Add Button --}}
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="mb-0">Daftar Kategori</h4>
         <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">
@@ -25,6 +28,7 @@
         </a>
     </div>
 
+    {{-- Alert --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -32,7 +36,9 @@
         </div>
     @endif
 
+    {{-- Card Table --}}
     <div class="card shadow-sm">
+
         <div class="card-body p-0">
 
             <table class="table table-striped table-hover mb-0">
@@ -62,6 +68,7 @@
 
         </div>
 
+        {{-- Pagination Check --}}
         @if(method_exists($kategori, 'links'))
         <div class="card-footer">
             {{ $kategori->links() }}

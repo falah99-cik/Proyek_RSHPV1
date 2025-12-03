@@ -1,14 +1,19 @@
 @extends('layouts.lte.main')
 
 @section('content-header')
-<div class="row">
+<div class="row align-items-center">
     <div class="col-sm-6">
         <h3 class="mb-0">Tambah Kategori</h3>
     </div>
+
     <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-end">
-            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.kategori.index') }}">Kategori</a></li>
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.kategori.index') }}">Kategori</a>
+            </li>
             <li class="breadcrumb-item active">Tambah</li>
         </ol>
     </div>
@@ -20,12 +25,14 @@
 <div class="container-fluid px-4 mt-4">
 
     <div class="card shadow-sm">
-        <div class="card-header">
+
+        <div class="card-header bg-white">
             <h5 class="mb-0">Form Tambah Kategori</h5>
         </div>
 
         <div class="card-body">
 
+            {{-- Error Validation Display --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <strong>Periksa input Anda:</strong>
@@ -37,12 +44,14 @@
                 </div>
             @endif
 
+            {{-- FORM --}}
             <form action="{{ route('admin.kategori.store') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
                     <label class="form-label">Nama Kategori</label>
-                    <input type="text" name="nama_kategori"
+                    <input type="text"
+                           name="nama_kategori"
                            class="form-control @error('nama_kategori') is-invalid @enderror"
                            placeholder="Contoh: Vaksinasi, Diagnostik"
                            value="{{ old('nama_kategori') }}">
@@ -58,7 +67,7 @@
                     </a>
 
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-save"></i> Simpan
+                        <i class="bi bi-check2-circle"></i> Simpan
                     </button>
                 </div>
 
