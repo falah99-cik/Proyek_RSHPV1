@@ -1,49 +1,87 @@
-@extends('layouts.app')
+@extends('layouts.lte.main')
+
+@section('content-header')
+<div class="row align-items-center">
+    <div class="col-sm-6">
+        <h3 class="mb-0">Pemilik</h3>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-end mb-0">
+            <li class="breadcrumb-item">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">Pemilik</li>
+        </ol>
+    </div>
+</div>
+@endsection
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Daftar Pemilik</h2>
-    <a href="{{ route('admin.pemilik.create') }}" class="btn btn-primary">+ Tambah Pemilik</a>
-</div>
+<div class="container-fluid px-4 mt-4">
 
-@if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-@endif
+    {{-- Header Title + Add Button --}}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Daftar Pemilik</h4>
+        <a href="{{ route('admin.pemilik.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Tambah Pemilik
+        </a>
+    </div>
 
-<div class="card">
-    <div class="card-body">
+    {{-- ALERT SUCCESS --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
 
-        <table class="table table-bordered table-striped">
-            <thead class="text-center">
-                <tr>
-                    <th>No</th>
-                    <th>Nama Pemilik</th>
-                    <th>Nomor WA</th>
-                    <th>Alamat</th>
-                    <th>Email User</th>
-                </tr>
-            </thead>
+    {{-- CARD TABLE --}}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
 
-            <tbody>
-                @forelse ($pemilik as $p)
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light text-center">
                     <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $p->user->nama ?? '-' }}</td>
-                        <td>{{ $p->no_wa }}</td>
-                        <td>{{ $p->alamat }}</td>
-                        <td>{{ $p->user->email ?? '-' }}</td>
+                        <th width="60px">No</th>
+                        <th>Nama Pemilik</th>
+                        <th>Nomor WA</th>
+                        <th>Alamat</th>
+                        <th>Email User</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center">Belum ada data pemilik.</td>
-                    </tr>
-                @endforelse
-            </tbody>
+                </thead>
 
-        </table>
+                <tbody>
+                    @forelse ($pemilik as $p)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td>{{ $p->user->nama ?? '-' }}</td>
+                            <td>{{ $p->no_wa }}</td>
+                            <td>{{ $p->alamat }}</td>
+                            <td>{{ $p->user->email ?? '-' }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                Belum ada data pemilik.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {{-- Pagination jika pakai paginate --}}
+        @if(method_exists($pemilik, 'links'))
+        <div class="card-footer">
+            {{ $pemilik->links() }}
+        </div>
+        @endif
 
     </div>
+
 </div>
 
 @endsection
