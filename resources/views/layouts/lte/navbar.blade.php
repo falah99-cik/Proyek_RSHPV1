@@ -66,8 +66,3 @@
 </nav>
 </body>
 
-.app-header {
-    position: sticky;
-    top: 0;
-    z-index: 1030;
-}
