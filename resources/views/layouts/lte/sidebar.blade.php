@@ -120,6 +120,24 @@
                     </ul>
                 </li>
 
+                                <li class="nav-item {{ request()->is('admin/*') ? 'menu-close' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-receipt-cutoff"></i>
+                        <p>
+                            Transaksi Pelayanan
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.temu_dokter.index') }}" class="nav-link">
+                                <i class="bi bi-dot nav-icon"></i>
+                                <p>Temu Dokter</p>
+                            </a>
+                        </li>
+
             </ul>
         </nav>
     </div>
