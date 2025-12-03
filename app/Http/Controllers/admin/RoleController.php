@@ -30,8 +30,40 @@ class RoleController extends Controller
             ->with('success', 'Role berhasil ditambahkan');
     }
 
+    public function edit($id)
+{
+    $role = Role::findOrFail($id);
+    return view('admin.role.edit', compact('role'));
+}
 
-    /** VALIDATION */
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama_role' => 'required|min:3'
+    ]);
+
+    $role = Role::findOrFail($id);
+    $role->update([
+        'nama_role' => $request->nama_role
+    ]);
+
+    return redirect()->route('admin.role.index')
+                     ->with('success', 'Role berhasil diperbarui.');
+}
+
+public function destroy($id)
+{
+    $role = Role::findOrFail($id);
+
+    if ($role->userRole()->count() > 0) {
+        return back()->with('error', 'Role sedang digunakan oleh user.');
+    }
+
+    $role->delete();
+
+    return redirect()->route('admin.role.index')
+                     ->with('success', 'Role berhasil dihapus.');
+}
     private function validateRole($request)
     {
         $request->validate([

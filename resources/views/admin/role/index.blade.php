@@ -50,24 +50,76 @@
                     <tr>
                         <th width="60px">No</th>
                         <th>Nama Role</th>
+                        <th width="160px">Aksi</th>
                     </tr>
                 </thead>
 
                 <tbody>
+
                     @forelse ($role as $r)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $r->nama_role }}</td>
+
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    {{-- Edit --}}
+                                    <a href="{{ route('admin.role.edit', $r->idrole) }}" 
+                                       class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </a>
+
+                                    {{-- Delete --}}
+                                    <button 
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal{{ $r->idrole }}">
+                                        <i class="bi bi-trash3"></i> Hapus
+                                    </button>
+
+                                </div>
+                            </td>
                         </tr>
+
+                        {{-- Modal Delete --}}
+                        <div class="modal fade" id="deleteModal{{ $r->idrole }}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        Apakah Anda yakin ingin menghapus role 
+                                        <b>{{ $r->nama_role }}</b>?
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+
+                                        <form action="{{ route('admin.role.destroy', $r->idrole) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger">Hapus</button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                     @empty
                         <tr>
-                            <td colspan="2" class="text-center text-muted py-3">
+                            <td colspan="3" class="text-center text-muted py-3">
                                 Belum ada data role.
                             </td>
                         </tr>
                     @endforelse
-                </tbody>
 
+                </tbody>
             </table>
 
         </div>
