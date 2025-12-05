@@ -71,9 +71,9 @@ public function routeProfil()
     return match($role) {
         'Administrator' => route('admin.profil.index'),
         'Dokter'        => route('dokter.profil.index'),
-        'Perawat'       => route('perawat.profil'),
+        'Perawat'       => route('perawat.profil.index'),
         'Resepsionis'   => route('resepsionis.profil.index'),
-        'Pemilik'       => route('pemilik.profil'),
+        'Pemilik'       => route('pemilik.profil.index'),
         default         => '#',
     };
 }

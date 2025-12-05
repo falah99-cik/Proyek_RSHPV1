@@ -25,6 +25,9 @@ use App\Http\Controllers\dokter\DokterDetailRMController;
 use App\Http\Controllers\pemilik\PemilikDashboardController;
 
 use App\Http\Controllers\perawat\PerawatDashboardController;
+use App\Http\Controllers\perawat\PerawatProfilController;
+use App\Http\Controllers\perawat\PerawatPasienController;
+use App\Http\Controllers\perawat\PerawatRekamMedisController;
 
 use App\Http\Controllers\resepsionis\ResepsionisDashboardController;
 
@@ -194,16 +197,21 @@ Route::middleware(['auth', 'isPemilik'])->group(function () {
     //Route::get('/pemilik/pet', [\App\Http\Controllers\pemilik\PemilikPetController::class, 'index'])->name('pemilik.pet');
 });
 
-Route::middleware(['auth', 'isPerawat'])->group(function () {
-    Route::get('/perawat/dashboard', [PerawatDashboardController::class, 'index'])->name('perawat.dashboard');
-    //Route::get('/perawat/rekam-medis', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'index'])->name('perawat.rekam_medis.index');
-    //Route::get('/perawat/rekam-medis/create', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'create'])->name('perawat.rekam_medis.create');
-    //Route::post('/perawat/rekam-medis/store', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'store'])->name('perawat.rekam_medis.store');
-    //Route::get('/perawat/rekam-medis/{id}/show', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'show'])->name('perawat.rekam_medis.show');
+Route::middleware(['auth', 'isPerawat'])
+    ->prefix('perawat')
+    ->name('perawat.')
+    ->group(function () {
 
-    //Route::get('/perawat/detail-rm/{idrekam}', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'detail'])->name('perawat.detail_rm.index');
+        Route::get('/dashboard', [PerawatDashboardController::class, 'index'])->name('dashboard');
 
-    //Route::get('/perawat/profil', [PerawatDashboardController::class, 'profil'])->name('perawat.profil');
+        Route::get('/profil', [PerawatProfilController::class, 'index'])->name('profil.index');
+
+        Route::get('/pasien', [PerawatPasienController::class, 'index'])->name('pasien.index');
+
+        Route::get('/rekam-medis', [PerawatRekamMedisController::class, 'index'])->name('rekam.index');
+        Route::get('/rekam-medis/create', [PerawatRekamMedisController::class, 'create'])->name('rekam.create');
+        Route::post('/rekam-medis', [PerawatRekamMedisController::class, 'store'])->name('rekam.store');
+        Route::get('/rekam-medis/{id}', [PerawatRekamMedisController::class, 'show'])->name('rekam.show');
 });
 
 Route::middleware(['auth', 'isResepsionis'])->group(function () {
