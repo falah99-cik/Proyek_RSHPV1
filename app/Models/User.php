@@ -72,7 +72,6 @@ public function routeProfil()
         'Administrator' => route('admin.profil.index'),
         'Dokter'        => route('dokter.profil.index'),
         'Perawat'       => route('perawat.profil.index'),
-        'Resepsionis'   => route('resepsionis.profil.index'),
         'Pemilik'       => route('pemilik.profil.index'),
         default         => '#',
     };

@@ -22,4 +22,10 @@ class TemuDokter extends Model
     {
         return $this->belongsTo(Pet::class, 'idpet');
     }
+
+    public function roleUser()
+{
+    return $this->belongsTo(\App\Models\RoleUser::class, 'idrole_user', 'idrole_user');
+}
+
 }

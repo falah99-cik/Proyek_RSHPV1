@@ -30,6 +30,10 @@ use App\Http\Controllers\perawat\PerawatPasienController;
 use App\Http\Controllers\perawat\PerawatRekamMedisController;
 
 use App\Http\Controllers\resepsionis\ResepsionisDashboardController;
+use App\Http\Controllers\Resepsionis\PemilikController as ResepsionisPemilikController;
+use App\Http\Controllers\Resepsionis\PetController as ResepsionisPetController;
+use App\Http\Controllers\Resepsionis\TemuDokterController as ResepsionisTemuDokterController;
+
 
 
 use App\Http\Controllers\site\SiteController;
@@ -214,13 +218,15 @@ Route::middleware(['auth', 'isPerawat'])
         Route::get('/rekam-medis/{id}', [PerawatRekamMedisController::class, 'show'])->name('rekam.show');
 });
 
-Route::middleware(['auth', 'isResepsionis'])->group(function () {
-    Route::get('/resepsionis/dashboard', [ResepsionisDashboardController::class, 'index'])->name('resepsionis.dashboard');
-    //Route::resource('/resepsionis/pemilik', \App\Http\Controllers\resepsionis\ResepsionisPemilikController::class);
+Route::middleware(['auth', 'isResepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
 
-    //Route::resource('/resepsionis/pet', \App\Http\Controllers\resepsionis\ResepsionisPetController::class);
+    Route::get('/dashboard', [ResepsionisDashboardController::class, 'index'])->name('dashboard');
 
-    //Route::resource('/resepsionis/temu-dokter', \App\Http\Controllers\resepsionis\ResepsionisTemuDokterController::class);
+    Route::resource('pemilik', ResepsionisPemilikController::class);
+
+    Route::resource('pet', ResepsionisPetController::class);
+
+    Route::resource('temu-dokter', ResepsionisTemuDokterController::class);
 });
 
 Route::middleware(['auth'])->group(function () {

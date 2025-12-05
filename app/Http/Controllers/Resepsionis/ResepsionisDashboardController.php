@@ -1,40 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\resepsionis;
+namespace App\Http\Controllers\Resepsionis;
 
 use App\Http\Controllers\Controller;
-use App\Models\TemuDokter;
+use App\Models\Pemilik;
 use App\Models\Pet;
-use App\Models\User;
+use App\Models\TemuDokter;
+use Illuminate\Support\Carbon;
 
 class ResepsionisDashboardController extends Controller
 {
     public function index()
     {
-        // Total antrean hari ini
-        $tanggalHariIni = date('Y-m-d');
-        $jumlahAntreanHariIni = TemuDokter::whereDate('waktu_daftar', $tanggalHariIni)->count();
+        $today = Carbon::today();
 
-        // Total pasien (pet)
-        $jumlahPasien = Pet::count();
+        $count = [
+            'pemilik'           => Pemilik::count(),
+            'pet'               => Pet::count(),
+            'antrian_hari_ini'  => TemuDokter::whereDate('waktu_daftar', $today)->count(),
+            'selesai_hari_ini'  => TemuDokter::whereDate('waktu_daftar', $today)->where('status', 0)->count(),
+        ];
 
-        // Total dokter (role id = 2)
-        $jumlahDokter = User::whereHas('roleAktif', function ($q) {
-            $q->where('role.idrole', 2)
-              ->where('role_user.status', 1);
-        })->count();
-
-        // Daftar antrean hari ini
-        $antrian = TemuDokter::with(['pet'])
-            ->whereDate('waktu_daftar', $tanggalHariIni)
-            ->orderBy('no_urut', 'ASC')
+        $antrian = TemuDokter::with(['pet.pemilik.user', 'roleUser.user'])
+            ->whereDate('waktu_daftar', $today)
+            ->orderBy('no_urut', 'asc')
             ->get();
 
-        return view('resepsionis.dashboard', compact(
-            'jumlahAntreanHariIni',
-            'jumlahPasien',
-            'jumlahDokter',
-            'antrian'
-        ));
+        /** @var \Illuminate\Support\Collection|\App\Models\TemuDokter[] $antrian */
+
+        return view('resepsionis.dashboard', compact('count', 'antrian'));
     }
 }
