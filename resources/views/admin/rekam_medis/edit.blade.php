@@ -27,7 +27,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form action="{{ route('admin.rekam_medis.update', $data->idrekam_medis) }}" method="POST">
+            <form action="{{ route('admin.rekam_medis.update', data_get($data, 'idrekam_medis')) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -36,9 +36,9 @@
                     <label class="form-label">Pilih Pet</label>
                     <select class="form-control" name="idpet">
                         @foreach ($pet as $p)
-                            <option value="{{ $p->idpet }}" 
-                                {{ $p->idpet == $data->idpet ? 'selected' : '' }}>
-                                {{ $p->nama }}
+                            <option value="{{ data_get($p, 'idpet') }}"
+                                {{ data_get($p, 'idpet') == data_get($data, 'idpet') ? 'selected' : '' }}>
+                                {{ data_get($p, 'nama') }}
                             </option>
                         @endforeach
                     </select>
@@ -49,9 +49,9 @@
                     <label class="form-label">Dokter Pemeriksa</label>
                     <select class="form-control" name="dokter_pemeriksa">
                         @foreach ($dokter as $d)
-                            <option value="{{ $d->idrole_user }}"
-                                {{ $d->idrole_user == $data->dokter_pemeriksa ? 'selected' : '' }}>
-                                {{ $d->nama }}
+                            <option value="{{ data_get($d, 'idrole_user') }}"
+                                {{ data_get($d, 'idrole_user') == data_get($data, 'dokter_pemeriksa') ? 'selected' : '' }}>
+                                {{ data_get($d, 'nama') }}
                             </option>
                         @endforeach
                     </select>
@@ -62,9 +62,9 @@
                     <label class="form-label">Nomor Urut Temu Dokter</label>
                     <select class="form-control" name="idreservasi_dokter">
                         @foreach ($temu as $t)
-                            <option value="{{ $t->idreservasi_dokter }}"
-                                {{ $t->idreservasi_dokter == $data->idreservasi_dokter ? 'selected' : '' }}>
-                                {{ $t->no_urut }}
+                            <option value="{{ data_get($t, 'idreservasi_dokter') }}"
+                                {{ data_get($t, 'idreservasi_dokter') == data_get($data, 'idreservasi_dokter') ? 'selected' : '' }}>
+                                {{ data_get($t, 'no_urut') }}
                             </option>
                         @endforeach
                     </select>
@@ -73,19 +73,19 @@
                 {{-- ANAMNESA --}}
                 <div class="mb-3">
                     <label class="form-label">Anamnesa</label>
-                    <textarea class="form-control" name="anamnesa" rows="3">{{ $data->anamnesa }}</textarea>
+                    <textarea class="form-control" name="anamnesa" rows="3">{{ data_get($data, 'anamnesa') }}</textarea>
                 </div>
 
                 {{-- TEMUAN KLINIS --}}
                 <div class="mb-3">
                     <label class="form-label">Temuan Klinis</label>
-                    <textarea class="form-control" name="temuan_klinis" rows="3">{{ $data->temuan_klinis }}</textarea>
+                    <textarea class="form-control" name="temuan_klinis" rows="3">{{ data_get($data, 'temuan_klinis') }}</textarea>
                 </div>
 
                 {{-- DIAGNOSA --}}
                 <div class="mb-3">
                     <label class="form-label">Diagnosa</label>
-                    <textarea class="form-control" name="diagnosa" rows="3">{{ $data->diagnosa }}</textarea>
+                    <textarea class="form-control" name="diagnosa" rows="3">{{ data_get($data, 'diagnosa') }}</textarea>
                 </div>
 
                 <div class="text-end">
