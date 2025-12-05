@@ -25,13 +25,57 @@ class User extends Authenticatable
             ->wherePivot('status', 1);
     }
 
-    public function dokter()
+public function dokter()
 {
-    return $this->hasOne(Dokter::class, 'id_user', 'iduser');
+    return $this->hasOne(\App\Models\Dokter::class, 'id_user', 'iduser');
 }
-
 public function perawat()
 {
     return $this->hasOne(Perawat::class, 'id_user', 'iduser');
 }
+
+public function hasRole($roleName)
+{
+    return $this->roleAktif()->first()?->nama_role === $roleName;
+}
+
+public function isAdmin()
+{
+    return $this->hasRole('Administrator');
+}
+
+public function isDokter()
+{
+    return $this->hasRole('Dokter');
+}
+
+public function isPerawat()
+{
+    return $this->hasRole('Perawat');
+}
+
+public function isResepsionis()
+{
+    return $this->hasRole('Resepsionis');
+}
+
+public function isPemilik()
+{
+    return $this->hasRole('Pemilik');
+}
+
+public function routeProfil()
+{
+    $role = $this->roleAktif()->first()?->nama_role;
+
+    return match($role) {
+        'Administrator' => route('admin.profil.index'),
+        'Dokter'        => route('dokter.profil.index'),
+        'Perawat'       => route('perawat.profil'),
+        'Resepsionis'   => route('resepsionis.profil.index'),
+        'Pemilik'       => route('pemilik.profil'),
+        default         => '#',
+    };
+}
+
 }

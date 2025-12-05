@@ -24,4 +24,9 @@ class RekamMedis extends Model
     {
         return $this->belongsTo(Pet::class, 'idpet');
     }
+
+    public function dokterPemeriksa()
+{
+    return $this->belongsTo(Dokter::class, 'dokter_pemeriksa', 'id_dokter');
+}
 }

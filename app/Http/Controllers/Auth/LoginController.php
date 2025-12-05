@@ -11,12 +11,8 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    /**
-     * Override default redirect setelah login
-     */
     protected function authenticated(Request $request, $user)
     {
-        // Ambil role aktif dari relasi belongsToMany
         $role = $user->roleAktif()->first()?->nama_role;
 
         switch ($role) {

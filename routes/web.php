@@ -15,11 +15,19 @@ use App\Http\Controllers\admin\PemilikController;
 use App\Http\Controllers\admin\DokterController;
 use App\Http\Controllers\admin\PerawatController;
 use App\Http\Controllers\admin\AdminDashboardController;
+
 use App\Http\Controllers\dokter\DokterRekamMedisController;
 use App\Http\Controllers\dokter\DokterDashboardController;
+use App\Http\Controllers\dokter\DokterPasienController;
+use App\Http\Controllers\dokter\DokterProfilController;
+use App\Http\Controllers\dokter\DokterDetailRMController;
+
 use App\Http\Controllers\pemilik\PemilikDashboardController;
+
 use App\Http\Controllers\perawat\PerawatDashboardController;
+
 use App\Http\Controllers\resepsionis\ResepsionisDashboardController;
+
 
 use App\Http\Controllers\site\SiteController;
 use App\Http\Controllers\Auth\LoginController;
@@ -152,50 +160,59 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/detail-rm/edit/{id}', [\App\Http\Controllers\admin\DetailRMController::class, 'edit'])->name('detail_rm.edit');
     Route::put('/detail-rm/update/{id}', [\App\Http\Controllers\admin\DetailRMController::class, 'update'])->name('detail_rm.update');
     Route::delete('/detail-rm/delete/{id}', [\App\Http\Controllers\admin\DetailRMController::class, 'destroy'])->name('detail_rm.destroy');
+
+    Route::get('/profil', [App\Http\Controllers\Admin\AdminProfilController::class, 'index'])->name('profil.index');
 });
 
-Route::middleware(['auth', 'isDokter'])->group(function () {
-    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
-    Route::post('/dokter/rekam-medis/store', [DokterRekamMedisController::class, 'store'])->name('dokter.rekam_medis.store');
-    Route::get('/dokter/rekam-medis', [DokterRekamMedisController::class, 'index'])->name('dokter.rekam_medis.index');
-    Route::get('/dokter/rekam-medis/{id}', [DokterRekamMedisController::class, 'show'])->name('dokter.rekam_medis.show');
+Route::middleware(['auth', 'isDokter'])
+    ->prefix('dokter')
+    ->name('dokter.')
+    ->group(function () {
 
-    Route::get('/dokter/detail-rm/{idrekam}/create', [DokterRekamMedisController::class, 'createDetail'])->name('dokter.detail_rm.create');
-    Route::post('/dokter/detail-rm/store', [DokterRekamMedisController::class, 'storeDetail'])->name('dokter.detail_rm.store');
-    Route::get('/dokter/detail-rm/{id}/edit', [DokterRekamMedisController::class, 'editDetail'])->name('dokter.detail_rm.edit');
-    Route::put('/dokter/detail-rm/{id}/update', [DokterRekamMedisController::class, 'updateDetail'])->name('dokter.detail_rm.update');
-    Route::delete('/dokter/detail-rm/{id}/delete', [DokterRekamMedisController::class, 'deleteDetail'])->name('dokter.detail_rm.delete');
+        Route::get('/dashboard', [DokterDashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/dokter/profil', [DokterDashboardController::class, 'profil'])->name('dokter.profil');
-});
+        Route::get('/pasien', [DokterPasienController::class, 'index'])->name('pasien.index');
+
+        Route::get('/rekam-medis', [DokterRekamMedisController::class, 'index'])->name('rekam_medis.index');
+
+        Route::get('/detail-rm/{idrekam}', [DokterDetailRMController::class, 'index'])->name('detail_rm.index');
+        Route::get('/detail-rm/{idrekam}/create', [DokterDetailRMController::class, 'create'])->name('detail_rm.create');
+        Route::post('/detail-rm/store', [DokterDetailRMController::class, 'store'])->name('detail_rm.store');
+        Route::get('/detail-rm/edit/{id}', [DokterDetailRMController::class, 'edit'])->name('detail_rm.edit');
+        Route::put('/detail-rm/update/{id}', [DokterDetailRMController::class, 'update'])->name('detail_rm.update');
+        Route::delete('/detail-rm/delete/{id}', [DokterDetailRMController::class, 'destroy'])->name('detail_rm.destroy');
+
+        Route::get('/profil', [DokterProfilController::class, 'index'])->name('profil.index');
+    });
+
 
 Route::middleware(['auth', 'isPemilik'])->group(function () {
     Route::get('/pemilik/dashboard', [PemilikDashboardController::class, 'index'])->name('pemilik.dashboard');
     Route::get('/pemilik/jadwal', [\App\Http\Controllers\pemilik\PemilikTemuDokterController::class, 'index'])->name('pemilik.jadwal');
     Route::get('/pemilik/rekam-medis', [\App\Http\Controllers\pemilik\PemilikRekamMedisController::class, 'index'])->name('pemilik.rekam_medis');
     Route::get('/pemilik/profil', [PemilikDashboardController::class, 'profil'])->name('pemilik.profil');
-    Route::get('/pemilik/pet', [\App\Http\Controllers\pemilik\PemilikPetController::class, 'index'])->name('pemilik.pet');
+    //Route::get('/pemilik/pet', [\App\Http\Controllers\pemilik\PemilikPetController::class, 'index'])->name('pemilik.pet');
 });
 
 Route::middleware(['auth', 'isPerawat'])->group(function () {
     Route::get('/perawat/dashboard', [PerawatDashboardController::class, 'index'])->name('perawat.dashboard');
-    Route::get('/perawat/rekam-medis', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'index'])->name('perawat.rekam_medis.index');
-    Route::get('/perawat/rekam-medis/create', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'create'])->name('perawat.rekam_medis.create');
-    Route::post('/perawat/rekam-medis/store', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'store'])->name('perawat.rekam_medis.store');
-    Route::get('/perawat/rekam-medis/{id}/show', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'show'])->name('perawat.rekam_medis.show');
+    //Route::get('/perawat/rekam-medis', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'index'])->name('perawat.rekam_medis.index');
+    //Route::get('/perawat/rekam-medis/create', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'create'])->name('perawat.rekam_medis.create');
+    //Route::post('/perawat/rekam-medis/store', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'store'])->name('perawat.rekam_medis.store');
+    //Route::get('/perawat/rekam-medis/{id}/show', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'show'])->name('perawat.rekam_medis.show');
 
-    Route::get('/perawat/detail-rm/{idrekam}', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'detail'])->name('perawat.detail_rm.index');
+    //Route::get('/perawat/detail-rm/{idrekam}', [\App\Http\Controllers\perawat\PerawatRekamMedisController::class, 'detail'])->name('perawat.detail_rm.index');
 
-    Route::get('/perawat/profil', [PerawatDashboardController::class, 'profil'])->name('perawat.profil');
+    //Route::get('/perawat/profil', [PerawatDashboardController::class, 'profil'])->name('perawat.profil');
 });
 
 Route::middleware(['auth', 'isResepsionis'])->group(function () {
     Route::get('/resepsionis/dashboard', [ResepsionisDashboardController::class, 'index'])->name('resepsionis.dashboard');
-    Route::resource('/resepsionis/pemilik', \App\Http\Controllers\resepsionis\ResepsionisPemilikController::class);
+    //Route::resource('/resepsionis/pemilik', \App\Http\Controllers\resepsionis\ResepsionisPemilikController::class);
 
-    Route::resource('/resepsionis/pet', \App\Http\Controllers\resepsionis\ResepsionisPetController::class);
+    //Route::resource('/resepsionis/pet', \App\Http\Controllers\resepsionis\ResepsionisPetController::class);
 
-    Route::resource('/resepsionis/temu-dokter', \App\Http\Controllers\resepsionis\ResepsionisTemuDokterController::class);
+    //Route::resource('/resepsionis/temu-dokter', \App\Http\Controllers\resepsionis\ResepsionisTemuDokterController::class);
 });
 
 Route::middleware(['auth'])->group(function () {

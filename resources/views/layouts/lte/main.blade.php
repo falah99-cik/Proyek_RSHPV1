@@ -11,7 +11,23 @@
 
     @include('layouts.lte.navbar')
 
+@if(Auth::check() && Auth::user()->isDokter())
+    @include('layouts.lte.sidebar_dokter')
+
+@elseif(Auth::check() && Auth::user()->isPerawat())
+    @include('layouts.lte.sidebar_perawat')
+
+@elseif(Auth::check() && Auth::user()->isResepsionis())
+    @include('layouts.lte.sidebar_resepsionis')
+
+@elseif(Auth::check() && Auth::user()->isPemilik())
+    @include('layouts.lte.sidebar_pemilik')
+
+@else
+    {{-- Default sidebar untuk Administrator --}}
     @include('layouts.lte.sidebar')
+@endif
+
 
     <main class="app-main">
 

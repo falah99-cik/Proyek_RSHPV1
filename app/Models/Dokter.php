@@ -10,16 +10,9 @@ class Dokter extends Model
     protected $primaryKey = 'id_dokter';
     public $timestamps = false;
 
-    protected $fillable = [
-        'alamat',
-        'no_hp',
-        'bidang_dokter',
-        'jenis_kelamin',
-        'id_user',
-    ];
-
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'iduser');
     }
 }
+

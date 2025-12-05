@@ -41,14 +41,16 @@
                     <li class="user-header text-bg-primary">
                         <img src="{{ asset('assets/adminlte/img/user2-160x160.jpg') }}"
                              class="rounded-circle shadow" alt="User Image">
+
                         <p>
                             {{ Auth::user()->nama }}
-                            <small>RSHP Member</small>
+                            <small>{{ Auth::user()->roleAktif()->first()?->nama_role }}</small>
                         </p>
                     </li>
 
                     <li class="user-footer">
-                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                        <a href="{{ Auth::user()->routeProfil() }}" class="btn btn-default btn-flat">Profile</a>
+
                         <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-end"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Logout
