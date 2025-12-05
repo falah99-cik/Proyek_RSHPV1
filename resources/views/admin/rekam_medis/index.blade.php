@@ -77,13 +77,19 @@
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2">
 
-                                    {{-- Edit --}}
+                                    {{-- DETAIL --}}
+                                    <a href="{{ route('admin.detail_rm.index', $rm->idrekam_medis) }}"
+                                    class="btn btn-info btn-sm">
+                                        <i class="bi bi-eye"></i> Detail
+                                    </a>
+
+                                    {{-- EDIT --}}
                                     <a href="{{ route('admin.rekam_medis.edit', $rm->idrekam_medis) }}"
-                                       class="btn btn-warning btn-sm">
+                                    class="btn btn-warning btn-sm">
                                         <i class="bi bi-pencil-square"></i> Edit
                                     </a>
 
-                                    {{-- Delete --}}
+                                    {{-- DELETE --}}
                                     <button class="btn btn-danger btn-sm"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteModal{{ $rm->idrekam_medis }}">
@@ -112,7 +118,7 @@
                                         <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 
                                         <form action="{{ route('admin.rekam_medis.destroy', $rm->idrekam_medis) }}"
-                                              method="POST">
+                                            method="POST">
                                             @csrf
                                             @method('DELETE')
 

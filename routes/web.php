@@ -144,6 +144,7 @@ Route::middleware(['auth', 'isAdmin'])
     Route::get('/rekam-medis/{id}/edit', [\App\Http\Controllers\admin\RekamMedisController::class, 'edit'])->name('rekam_medis.edit');
     Route::put('/rekam-medis/{id}/update', [\App\Http\Controllers\admin\RekamMedisController::class, 'update'])->name('rekam_medis.update');
     Route::delete('/rekam-medis/{id}/delete', [\App\Http\Controllers\admin\RekamMedisController::class, 'destroy'])->name('rekam_medis.destroy');
+    Route::get('/rekam-medis/{id}/pdf', [\App\Http\Controllers\admin\RekamMedisController::class, 'exportPdf'])->name('admin.rekam_medis.pdf');
 
     Route::get('/detail-rm/{idrekam}', [\App\Http\Controllers\admin\DetailRMController::class, 'index'])->name('detail_rm.index');
     Route::get('/detail-rm/{idrekam}/create', [\App\Http\Controllers\admin\DetailRMController::class, 'create'])->name('detail_rm.create');
