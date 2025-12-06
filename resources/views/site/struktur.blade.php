@@ -20,7 +20,7 @@
 
         <div class="staff-member-card">
             <div class="person-photo">
-                <img src="{{ asset('assets/images/pas foto 3x4 Ahmad Mathlaul Falah.jpg') }}" 
+                <img src="{{ asset('assets/img/pas foto 3x4 Ahmad Mathlaul Falah.jpg') }}" 
                      alt="Foto Direktur">
             </div>
             <div class="person-name">Drh. Ahmad Mathlaul Falah, S.Tr.TI</div>
@@ -29,7 +29,7 @@
 
         <div class="staff-member-card">
             <div class="person-photo">
-                <img src="{{ asset('assets/images/Gambar WhatsApp 2025-04-22 pukul 22.13.43_7018da19-removebg-preview.jpg') }}" 
+                <img src="{{ asset('assets/img/Gambar WhatsApp 2025-04-22 pukul 22.13.43_7018da19-removebg-preview.jpg') }}" 
                      alt="Foto Wakil Direktur">
             </div>
             <div class="person-name">Drh. Ayuni Syazana, S.Ap</div>
@@ -38,7 +38,7 @@
 
         <div class="staff-member-card">
             <div class="person-photo">
-                <img src="{{ asset('assets/images/a22725aed8f8ef9a3cdf43720605c6e1.jpg') }}" 
+                <img src="{{ asset('assets/img/a22725aed8f8ef9a3cdf43720605c6e1.jpg') }}" 
                      alt="Foto Kepala Layanan">
             </div>
             <div class="person-name">Drh. Budi Santoso</div>
