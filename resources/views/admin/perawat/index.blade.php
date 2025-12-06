@@ -45,11 +45,11 @@
                 <thead class="table-light text-center">
                     <tr>
                         <th width="60px">No</th>
+                        <th>Nama Perawat</th>
                         <th>Alamat</th>
                         <th>No HP</th>
                         <th>Jenis Kelamin</th>
                         <th>Pendidikan</th>
-                        <th>User</th>
                         <th width="160px">Aksi</th>
                     </tr>
                 </thead>
@@ -58,7 +58,7 @@
                 @forelse ($perawat as $p)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-
+                        <td>{{ $p->nama_user }}</td>
                         <td>{{ $p->alamat }}</td>
                         <td>{{ $p->no_hp }}</td>
 
@@ -74,8 +74,6 @@
                         </td>
 
                         <td>{{ $p->pendidikan }}</td>
-
-                        <td>{{ $p->nama_user }}</td>
 
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">

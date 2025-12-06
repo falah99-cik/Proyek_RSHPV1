@@ -64,9 +64,9 @@
                             {{-- STATUS --}}
                             <td class="text-center">
                                 @if($item->status == '1')
-                                    <span class="badge bg-success">Aktif</span>
+                                    <span class="badge bg-success">Selesai</span>
                                 @else
-                                    <span class="badge bg-secondary">Selesai</span>
+                                    <span class="badge bg-warning text-dark">Menunggu</span>
                                 @endif
                             </td>
 

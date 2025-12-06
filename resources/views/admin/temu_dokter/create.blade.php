@@ -53,8 +53,8 @@
                 <div class="mb-3">
                     <label class="form-label">Status</label>
                     <select class="form-control" name="status">
-                        <option value="1">Aktif</option>
-                        <option value="0">Selesai</option>
+                        <option value="1">Selesai</option>
+                        <option value="0">Menunggu</option>
                     </select>
                 </div>
 

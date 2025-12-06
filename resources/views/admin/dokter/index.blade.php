@@ -44,11 +44,11 @@
                 <thead class="table-light text-center">
                     <tr>
                         <th width="60px">No</th>
+                        <th>Nama Dokter</th>
                         <th>Alamat</th>
                         <th>No HP</th>
                         <th>Bidang Dokter</th>
                         <th>Jenis Kelamin</th>
-                        <th>User</th>
                         <th width="160px">Aksi</th>
                     </tr>
                 </thead>
@@ -57,6 +57,7 @@
                 @forelse ($dokter as $d)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>{{ $d->nama_user }}</td>
                         <td>{{ $d->alamat }}</td>
                         <td>{{ $d->no_hp }}</td>
                         <td>{{ $d->bidang_dokter }}</td>
@@ -69,8 +70,6 @@
         <span class="badge bg-secondary">-</span>
     @endif
 </td>
-
-                        <td>{{ $d->nama_user }}</td>
 
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">

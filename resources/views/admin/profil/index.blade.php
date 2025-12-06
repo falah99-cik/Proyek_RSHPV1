@@ -62,11 +62,6 @@
                             <p class="text-muted">Administrator</p>
                         </div>
 
-                        <div class="col-md-12 mb-3">
-                            <p class="mb-1 fw-bold">Alamat</p>
-                            <p class="text-muted">{{ $admin->alamat ?? '-' }}</p>
-                        </div>
-
                     </div>
 
                 </div>

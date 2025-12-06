@@ -64,8 +64,8 @@
                 <div class="mb-3">
                     <label class="form-label">Status</label>
                     <select class="form-control" name="status">
-                        <option value="1" {{ data_get($data, 'status') == '1' ? 'selected' : '' }}>Aktif</option>
-                        <option value="0" {{ data_get($data, 'status') == '0' ? 'selected' : '' }}>Selesai</option>
+                        <option value="1" {{ data_get($data, 'status') == 1 ? 'selected' : '' }}>Selesai</option>
+                        <option value="0" {{ data_get($data, 'status') == 0 ? 'selected' : '' }}>Menunggu</option>
                     </select>
                 </div>
 
