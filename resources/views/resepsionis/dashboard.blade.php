@@ -37,7 +37,7 @@
     <div class="col-md-4">
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>{{ $todayRegistrations }}</h3>
+                <h3>{{ $todayRegistrations->first()->no_urut ?? '-' }}</h3>
                 <p>Pendaftaran Baru</p>
             </div>
             <div class="icon"><i class="fas fa-user-plus"></i></div>

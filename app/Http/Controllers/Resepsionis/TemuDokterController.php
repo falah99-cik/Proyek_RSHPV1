@@ -44,7 +44,6 @@ class TemuDokterController extends Controller
         $data = TemuDokter::findOrFail($id);
         $pet = Pet::all();
 
-        // Dokter = idrole = 2
         $dokter = RoleUser::with('user')
             ->where('idrole', 2)
             ->where('status', 1)
@@ -97,7 +96,7 @@ class TemuDokterController extends Controller
             'no_urut'     => $this->generateNoUrut(),
             'idpet'       => $data['idpet'],
             'idrole_user' => $data['idrole_user'],
-            'status'      => 1,
+            'status'      => 0, // default: menunggu
         ]);
     }
 
@@ -110,16 +109,14 @@ class TemuDokterController extends Controller
         ]);
     }
 
-    private function generateNoUrut()
-    {
-        $today = now()->format('Ymd');
+private function generateNoUrut()
+{
+    $today = now()->format('Ymd');
 
-        $last = TemuDokter::whereDate('waktu_daftar', now()->toDateString())
-                ->orderBy('no_urut', 'DESC')
-                ->first();
+    $countToday = TemuDokter::whereDate('waktu_daftar', now()->toDateString())->count();
+    $next = $countToday + 1;
 
-        $next = $last ? ((int)explode('-', $last->no_urut)[1] + 1) : 1;
+    return $today . '-' . str_pad($next, 3, '0', STR_PAD_LEFT);
+}
 
-        return $today . '-' . str_pad($next, 3, '0', STR_PAD_LEFT);
-    }
 }

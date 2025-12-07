@@ -10,24 +10,53 @@ use Illuminate\Support\Carbon;
 
 class ResepsionisDashboardController extends Controller
 {
-    public function index()
-    {
-        $today = Carbon::today();
+public function index()
+{
+    $totalPemilik = Pemilik::count();
+    $totalPet = Pet::count();
 
-        $count = [
-            'pemilik'           => Pemilik::count(),
-            'pet'               => Pet::count(),
-            'antrian_hari_ini'  => TemuDokter::whereDate('waktu_daftar', $today)->count(),
-            'selesai_hari_ini'  => TemuDokter::whereDate('waktu_daftar', $today)->where('status', 0)->count(),
-        ];
+    // TOTAL ANTRIAN HARI INI
+    $totalAntrian = TemuDokter::whereDate('waktu_daftar', today())->count();
 
-        $antrian = TemuDokter::with(['pet.pemilik.user', 'roleUser.user'])
-            ->whereDate('waktu_daftar', $today)
-            ->orderBy('no_urut', 'asc')
-            ->get();
+    // TOTAL YANG MASIH MENUNGGU
+    $totalMenunggu = TemuDokter::whereDate('waktu_daftar', today())
+                        ->where('status', 0)
+                        ->count();
 
-        /** @var \Illuminate\Support\Collection|\App\Models\TemuDokter[] $antrian */
+    // SEMUA ANTRIAN HARI INI
+    $antrianHariIni = TemuDokter::with(['pet.pemilik', 'roleUser.user'])
+                        ->whereDate('waktu_daftar', today())
+                        ->orderBy('no_urut', 'asc')
+                        ->get();
 
-        return view('resepsionis.dashboard', compact('count', 'antrian'));
-    }
+    // ANTRIAN AKTIF (yang masih status = 0)
+    $antrianAktif = TemuDokter::with(['pet.pemilik'])
+                        ->whereDate('waktu_daftar', today())
+                        ->where('status', 0)
+                        ->orderBy('no_urut', 'asc')
+                        ->get();
+
+    $todayRegistrations = TemuDokter::with(['pet.pemilik'])
+                        ->whereDate('waktu_daftar', today())
+                        ->orderBy('no_urut', 'asc')
+                        ->get();
+
+    $recentAntrian = TemuDokter::with(['pet.pemilik'])
+                    ->orderBy('waktu_daftar', 'desc')
+                    ->limit(5)
+                    ->get();
+
+
+    return view('resepsionis.dashboard', [
+        'totalPemilik'   => $totalPemilik,
+        'totalPet'       => $totalPet,
+        'totalAntrian'   => $totalAntrian,
+        'totalMenunggu'  => $totalMenunggu,
+        'antrianHariIni' => $antrianHariIni,
+        'antrianAktif'   => $antrianAktif,
+        'todayRegistrations'  => $todayRegistrations,
+        'recentAntrian'       => $recentAntrian,
+    ]);
+}
+
 }

@@ -44,7 +44,7 @@
                 <tr>
                     <th>No Urut</th>
                     <th>Pet</th>
-                    <th>Perawat</th>
+                    <th>Dokter Pemeriksa</th>
                     <th>Status</th>
                     <th width="120">Aksi</th>
                 </tr>
@@ -57,8 +57,12 @@
                     <td>{{ $d->roleUser->user->nama }}</td>
                     <td>
                         @if (data_get($d, 'status') == 0)
-                            <span class="badge bg-warning">Menunggu</span>
-                        @else
+                            <span class="badge bg-secondary">Menunggu</span>
+                        @elseif (data_get($d, 'status') == 1)
+                            <span class="badge bg-warning">Diproses Perawat</span>
+                        @elseif (data_get($d, 'status') == 2)
+                            <span class="badge bg-info">Menunggu Dokter</span>
+                        @elseif (data_get($d, 'status') == 3)
                             <span class="badge bg-success">Selesai</span>
                         @endif
                     </td>
