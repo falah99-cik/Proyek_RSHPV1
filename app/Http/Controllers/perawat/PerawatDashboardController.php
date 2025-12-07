@@ -15,10 +15,10 @@ class PerawatDashboardController extends Controller
 
         $pasienRm = Pet::whereHas('rekamMedis')->count();
 
-        $antrian = TemuDokter::where('status', 1)->count();
+        $antrian = TemuDokter::where('status', 0)->count();
 
         $listAntrian = TemuDokter::with(['pet.pemilik.user'])
-                ->where('status', 1)
+                ->where('status', 0)
                 ->orderBy('waktu_daftar', 'ASC')
                 ->take(5)
                 ->get();

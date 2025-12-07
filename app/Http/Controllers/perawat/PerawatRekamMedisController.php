@@ -43,6 +43,7 @@ public function store(Request $request)
     $reservasi = TemuDokter::findOrFail($request->idreservasi_dokter);
 
     RekamMedis::create([
+        'created_at' => now(),
         'anamnesa' => $request->anamnesa,
         'temuan_klinis' => $request->temuan_klinis,
         'diagnosa' => $request->diagnosa,
@@ -51,7 +52,10 @@ public function store(Request $request)
         'dokter_pemeriksa' => $reservasi->idrole_user, // ← otomatis
     ]);
 
-    $reservasi->update(['status' => 2]);
+    $reservasi->update([
+    'status' => 2,
+]);
+
 
     return redirect()->route('perawat.rekam.index')
         ->with('success', 'Rekam Medis berhasil dibuat dan dikirim ke Dokter.');

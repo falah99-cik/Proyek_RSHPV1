@@ -9,6 +9,8 @@ class RekamMedis extends Model
     protected $table = 'rekam_medis';
     protected $primaryKey = 'idrekam_medis';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'anamnesa',
         'temuan_klinis',

@@ -20,7 +20,6 @@ if (!$role) {
 $idrole_user = $role->idrole_user;
 
         $antrian = TemuDokter::whereIn('status', [0, 1])
-    ->where('idrole_user', auth()->user()->roleUserActive->idrole_user)
     ->with('pet.pemilik.user')
     ->orderBy('no_urut')
     ->get();
@@ -33,7 +32,7 @@ $idrole_user = $role->idrole_user;
         $temu = TemuDokter::findOrFail($id);
 
         $temu->update([
-            'status' => 1 // dalam proses perawat
+            'status' => 1
         ]);
 
         return back()->with('success', 'Pasien mulai diproses. Silakan buat Rekam Medis.');

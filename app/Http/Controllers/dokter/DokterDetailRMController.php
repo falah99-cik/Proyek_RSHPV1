@@ -113,6 +113,10 @@ class DokterDetailRMController extends Controller
             'detail' => $this->formatText($request->detail),
         ]);
 
+            DB::table('temu_dokter')
+        ->where('idreservasi_dokter', $rekam->idreservasi_dokter)
+        ->update(['status' => 3]);
+
         return redirect()
             ->route('dokter.detail_rm.index', $request->idrekam_medis)
             ->with('success', 'Detail tindakan berhasil ditambahkan.');

@@ -142,61 +142,6 @@
         </div>
     </div>
 
-
-    {{-- === JADWAL HARI INI === --}}
-    <div class="card shadow-sm mt-4">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Jadwal Temu Dokter Hari Ini</h5>
-        </div>
-
-        <div class="card-body p-0">
-            <table class="table table-striped table-hover mb-0">
-                <thead class="table-light text-center">
-                    <tr>
-                        <th>No Urut</th>
-                        <th>Nama Pet</th>
-                        <th>Waktu Daftar</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @forelse ($jadwal_hari_ini as $j)
-                        <tr class="text-center">
-
-                            <td><span class="badge bg-primary">{{ $j->no_urut }}</span></td>
-
-                            <td>{{ $j->nama_pet }}</td>
-
-                            <td>{{ $j->waktu_daftar }}</td>
-
-                            <td>
-                                @if ($j->status == 0)
-                                    <span class="badge bg-secondary">Menunggu</span>
-                                @elseif ($j->status == 1)
-                                    <span class="badge bg-info text-dark">Proses Perawat</span>
-                                @elseif ($j->status == 2)
-                                    <span class="badge bg-warning text-dark">Menunggu Dokter</span>
-                                @else
-                                    <span class="badge bg-success">Selesai</span>
-                                @endif
-                            </td>
-
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-3 text-muted">
-                                Tidak ada jadwal hari ini
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-
-
     {{-- === REKAM MEDIS TERBARU === --}}
     <div class="card shadow-sm mt-4 mb-4">
         <div class="card-header bg-success text-white">
