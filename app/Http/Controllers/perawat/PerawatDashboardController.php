@@ -1,36 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\perawat;
+namespace App\Http\Controllers\Perawat;
 
 use App\Http\Controllers\Controller;
+use App\Models\TemuDokter;
 use App\Models\RekamMedis;
 use App\Models\Pet;
-use App\Models\KodeTindakanTerapi;
 
 class PerawatDashboardController extends Controller
 {
     public function index()
     {
-        // jumlah rekam medis
-        $jumlahRekamMedis = RekamMedis::count();
+        $totalRm = RekamMedis::count();
 
-        // jumlah pasien (pet)
-        $jumlahPasien = Pet::count();
+        $pasienRm = Pet::whereHas('rekamMedis')->count();
 
-        // jumlah tindakan terapi
-        $jumlahTindakan = KodeTindakanTerapi::count();
+        $antrian = TemuDokter::where('status', 1)->count();
 
-        // daftar rekam medis terbaru
-        $rekamMedisBaru = RekamMedis::with('pet')
-            ->orderBy('created_at', 'DESC')
-            ->take(10)
-            ->get();
+        $listAntrian = TemuDokter::with(['pet.pemilik.user'])
+                ->where('status', 1)
+                ->orderBy('waktu_daftar', 'ASC')
+                ->take(5)
+                ->get();
 
-        return view('perawat.dashboard', compact(
-            'jumlahRekamMedis',
-            'jumlahPasien',
-            'jumlahTindakan',
-            'rekamMedisBaru'
+        $recentRm = RekamMedis::with(['pet', 'dokter.user'])
+                ->orderBy('idrekam_medis', 'DESC')
+                ->take(5)
+                ->get();
+
+        return view('perawat.dashboard.index', compact(
+            'totalRm',
+            'pasienRm',
+            'antrian',
+            'listAntrian',
+            'recentRm'
         ));
     }
 }

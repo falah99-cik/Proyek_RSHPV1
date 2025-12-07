@@ -6,6 +6,7 @@
 <div class="row">
     <div class="col-sm-6">
         <h3>Edit Temu Dokter</h3>
+        <small class="text-muted">Perbarui data pendaftaran temu dokter</small>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
@@ -19,55 +20,53 @@
 
 @section('content')
 
-<div class="card">
+<div class="card shadow">
+    <div class="card-header bg-warning">
+        <strong>Edit Data</strong>
+    </div>
+
     <div class="card-body">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <form action="{{ route('resepsionis.temu-dokter.update', data_get($data, 'idreservasi_dokter')) }}" method="POST">
-            @csrf @method('PUT')
+        <form action="{{ route('resepsionis.temu-dokter.update', $temu->idreservasi_dokter) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-            {{-- PILIH PET --}}
             <div class="mb-3">
-                <label>Pet</label>
-                <select name="idpet" class="form-control">
+                <label class="form-label">Nama Hewan</label>
+                <select name="idpet" class="form-control" required>
                     @foreach ($pet as $p)
-                        <option 
-                            value="{{ data_get($p, 'idpet') }}"
-                            {{ data_get($p, 'idpet') == data_get($data, 'idpet') ? 'selected' : '' }}
-                        >
-                            {{ data_get($p, 'nama') }}
+                        <option value="{{ $p->idpet }}" {{ $temu->idpet == $p->idpet ? 'selected' : '' }}>
+                            {{ $p->nama }} — {{ $p->pemilik->user->nama }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            {{-- PILIH PERAWAT --}}
             <div class="mb-3">
-                <label>Perawat</label>
-                <select name="idrole_user" class="form-control">
-                    @foreach ($perawat as $pr)
-                        <option 
-                            value="{{ data_get($pr, 'idrole_user') }}"
-                            {{ data_get($pr, 'idrole_user') == data_get($data, 'idrole_user') ? 'selected' : '' }}
-                        >
-                            {{ data_get($pr, 'user.nama') }}
+                <label class="form-label">Dokter Pemeriksa</label>
+                <select name="idrole_user" class="form-control" required>
+                    @foreach ($dokter as $dr)
+                        <option value="{{ $dr->idrole_user }}" {{ $temu->idrole_user == $dr->idrole_user ? 'selected' : '' }}>
+                            {{ $dr->user->nama }}
                         </option>
                     @endforeach
                 </select>
             </div>
 
-            {{-- STATUS --}}
-            <div class="mb-3">
-                <label>Status</label>
-                <select name="status" class="form-control">
-                    <option value="1" {{ data_get($data, 'status') == 1 ? 'selected' : '' }}>Menunggu</option>
-                    <option value="0" {{ data_get($data, 'status') == 0 ? 'selected' : '' }}>Selesai</option>
-                </select>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-warning"><i class="fas fa-save"></i> Update</button>
             </div>
-
-            <button class="btn btn-primary">Simpan Perubahan</button>
 
         </form>
-
     </div>
 </div>
 

@@ -21,6 +21,7 @@
 @section('content')
 <div class="container-fluid px-4 mt-4">
 
+    {{-- === STATISTIK === --}}
     <div class="row g-3">
 
         <div class="col-md-3">
@@ -73,6 +74,8 @@
 
     </div>
 
+
+    {{-- === PASIEN BELUM DIPERIKSA === --}}
     <div class="card shadow-sm mt-4">
         <div class="card-header bg-warning">
             <h5 class="mb-0 text-dark">
@@ -104,7 +107,11 @@
 
                             <td>
                                 @if ($p->status == 0)
-                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                    <span class="badge bg-secondary">Menunggu</span>
+                                @elseif ($p->status == 1)
+                                    <span class="badge bg-info text-dark">Proses Perawat</span>
+                                @elseif ($p->status == 2)
+                                    <span class="badge bg-primary">Menunggu Dokter</span>
                                 @else
                                     <span class="badge bg-success">Selesai</span>
                                 @endif
@@ -135,6 +142,8 @@
         </div>
     </div>
 
+
+    {{-- === JADWAL HARI INI === --}}
     <div class="card shadow-sm mt-4">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Jadwal Temu Dokter Hari Ini</h5>
@@ -163,7 +172,11 @@
 
                             <td>
                                 @if ($j->status == 0)
-                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                    <span class="badge bg-secondary">Menunggu</span>
+                                @elseif ($j->status == 1)
+                                    <span class="badge bg-info text-dark">Proses Perawat</span>
+                                @elseif ($j->status == 2)
+                                    <span class="badge bg-warning text-dark">Menunggu Dokter</span>
                                 @else
                                     <span class="badge bg-success">Selesai</span>
                                 @endif
@@ -183,6 +196,8 @@
         </div>
     </div>
 
+
+    {{-- === REKAM MEDIS TERBARU === --}}
     <div class="card shadow-sm mt-4 mb-4">
         <div class="card-header bg-success text-white">
             <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Rekam Medis Terbaru</h5>

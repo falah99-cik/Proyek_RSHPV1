@@ -25,7 +25,6 @@
                     </a>
                 </li>
 
-                {{-- DATA PASIEN --}}
                 <li class="nav-item">
                     <a href="{{ route('perawat.pasien.index') }}"
                        class="nav-link {{ request()->is('perawat/pasien*') ? 'active' : '' }}">
@@ -34,7 +33,14 @@
                     </a>
                 </li>
 
-                {{-- REKAM MEDIS --}}
+                <li class="nav-item">
+                    <a href="{{ route('perawat.temu.index') }}"
+                       class="nav-link {{ request()->is('perawat/temu-dokter*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-calendar-check"></i>
+                        <p>Antrian Temu Dokter</p>
+                    </a>
+                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('perawat.rekam.index') }}"
                        class="nav-link {{ request()->is('perawat/rekam-medis*') ? 'active' : '' }}">
@@ -42,16 +48,6 @@
                         <p>Rekam Medis</p>
                     </a>
                 </li>
-
-                {{-- TAMBAH REKAM MEDIS --}}
-                <li class="nav-item">
-                    <a href="{{ route('perawat.rekam.create') }}"
-                       class="nav-link {{ request()->is('perawat/rekam-medis/create') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-plus-circle"></i>
-                        <p>Tambah Rekam Medis</p>
-                    </a>
-                </li>
-
 
             </ul>
         </nav>

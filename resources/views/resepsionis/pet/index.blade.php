@@ -25,10 +25,27 @@
     </div>
 
     <div class="card-body table-responsive">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Nama</th>
+                    <th>Nama Pet</th>
+                    <th>Umur</th>
                     <th>Jenis Kelamin</th>
                     <th>Pemilik</th>
                     <th>Ras</th>
@@ -39,6 +56,14 @@
                 @foreach ($pet as $p)
                 <tr>
                     <td>{{ $p->nama }}</td>
+                    <td>
+                        @php
+                            $lahir = \Carbon\Carbon::parse(data_get($p, 'tanggal_lahir'));
+                            $umur = $lahir->diff(\Carbon\Carbon::now());
+                        @endphp
+
+                        {{ $umur->y }} Tahun {{ $umur->m }} Bulan
+                    </td>
                     <td>
                         @if (data_get($p, 'jenis_kelamin') == 'J')
                             <span class="badge bg-primary">Jantan</span>

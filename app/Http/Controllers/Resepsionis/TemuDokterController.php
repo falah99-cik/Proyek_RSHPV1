@@ -19,9 +19,14 @@ class TemuDokterController extends Controller
     public function create()
     {
         $pet = Pet::all();
-        $perawat = RoleUser::where('idrole', 3)->with('user')->get();
 
-        return view('resepsionis.temu_dokter.create', compact('pet', 'perawat'));
+        // Dokter = idrole = 2
+        $dokter = RoleUser::with('user')
+            ->where('idrole', 2)
+            ->where('status', 1)
+            ->get();
+
+        return view('resepsionis.temu_dokter.create', compact('pet', 'dokter'));
     }
 
     public function store(Request $request)
@@ -38,9 +43,14 @@ class TemuDokterController extends Controller
     {
         $data = TemuDokter::findOrFail($id);
         $pet = Pet::all();
-        $perawat = RoleUser::where('idrole', 3)->with('user')->get();
 
-        return view('resepsionis.temu_dokter.edit', compact('data', 'pet', 'perawat'));
+        // Dokter = idrole = 2
+        $dokter = RoleUser::with('user')
+            ->where('idrole', 2)
+            ->where('status', 1)
+            ->get();
+
+        return view('resepsionis.temu_dokter.edit', compact('data', 'pet', 'dokter'));
     }
 
     public function update(Request $request, $id)
@@ -58,6 +68,7 @@ class TemuDokterController extends Controller
     public function destroy($id)
     {
         TemuDokter::destroy($id);
+
         return redirect()->route('resepsionis.temu-dokter.index')
             ->with('success', 'Data berhasil dihapus');
     }
@@ -65,27 +76,28 @@ class TemuDokterController extends Controller
     private function validateTemuDokter(Request $request)
     {
         return $request->validate([
-            'idpet' => 'required',
-            'idrole_user' => 'required',
+            'idpet'       => 'required|exists:pet,idpet',
+            'idrole_user' => 'required|exists:role_user,idrole_user',
         ]);
     }
 
     private function validateTemuDokterUpdate(Request $request)
     {
         return $request->validate([
-            'idpet'       => 'required',
-            'idrole_user' => 'required',
+            'idpet'       => 'required|exists:pet,idpet',
+            'idrole_user' => 'required|exists:role_user,idrole_user',
             'status'      => 'required',
         ]);
     }
 
+
     private function createTemuDokter($data)
     {
         TemuDokter::create([
-            'no_urut'     => $this->generateAntrian(),
-            'status'      => 1,
+            'no_urut'     => $this->generateNoUrut(),
             'idpet'       => $data['idpet'],
             'idrole_user' => $data['idrole_user'],
+            'status'      => 1,
         ]);
     }
 
@@ -98,8 +110,16 @@ class TemuDokterController extends Controller
         ]);
     }
 
-    private function generateAntrian()
+    private function generateNoUrut()
     {
-        return 'TD-' . date('Ymd-His');
+        $today = now()->format('Ymd');
+
+        $last = TemuDokter::whereDate('waktu_daftar', now()->toDateString())
+                ->orderBy('no_urut', 'DESC')
+                ->first();
+
+        $next = $last ? ((int)explode('-', $last->no_urut)[1] + 1) : 1;
+
+        return $today . '-' . str_pad($next, 3, '0', STR_PAD_LEFT);
     }
 }

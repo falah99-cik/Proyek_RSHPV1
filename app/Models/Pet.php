@@ -9,6 +9,15 @@ class Pet extends Model
     protected $primaryKey = 'idpet';
     public $timestamps = false;
 
+    protected $fillable = [
+    'nama',
+    'tanggal_lahir',
+    'warna_tanda',
+    'jenis_kelamin',
+    'idpemilik',
+    'idras_hewan',
+];
+
     public function pemilik()
     {
         return $this->belongsTo(Pemilik::class, 'idpemilik', 'idpemilik');
@@ -18,4 +27,10 @@ class Pet extends Model
     {
         return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan');
     }
+
+    public function rekamMedis()
+    {
+    return $this->hasMany(RekamMedis::class, 'idpet');
+    }
+
 }

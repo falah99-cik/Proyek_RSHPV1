@@ -10,6 +10,12 @@ class User extends Authenticatable
     protected $primaryKey = 'iduser';
     public $timestamps = false;
 
+    protected $fillable = [
+    'nama',
+    'email',
+    'password'
+];
+
     public function pemilik()
     {
         return $this->hasOne(Pemilik::class, 'iduser', 'iduser');
@@ -17,6 +23,12 @@ class User extends Authenticatable
     public function roleUser()
     {
         return $this->hasMany(RoleUser::class, 'iduser');
+    }
+
+        public function roleUserActive()
+    {
+        return $this->hasOne(RoleUser::class, 'iduser', 'iduser')
+                    ->where('status', 1);
     }
 
     public function roleAktif()

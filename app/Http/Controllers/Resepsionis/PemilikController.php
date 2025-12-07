@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\RoleUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class PemilikController extends Controller
 {
@@ -75,8 +76,10 @@ class PemilikController extends Controller
         ]);
     }
 
-    private function createPemilik($data)
-    {
+private function createPemilik($data)
+{
+    DB::transaction(function () use ($data) {
+
         $user = User::create([
             'nama'     => $this->formatNama($data['nama']),
             'email'    => strtolower($data['email']),
@@ -86,6 +89,7 @@ class PemilikController extends Controller
         RoleUser::create([
             'iduser' => $user->iduser,
             'idrole' => 5,
+            'status' => 1,
         ]);
 
         Pemilik::create([
@@ -93,7 +97,9 @@ class PemilikController extends Controller
             'no_wa'  => $data['no_wa'],
             'alamat' => $data['alamat'],
         ]);
-    }
+    });
+}
+
 
     private function updatePemilik($pemilik, $data)
     {

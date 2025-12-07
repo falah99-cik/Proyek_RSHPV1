@@ -20,12 +20,21 @@ class TemuDokter extends Model
 
     public function pet()
     {
-        return $this->belongsTo(Pet::class, 'idpet');
+        return $this->belongsTo(Pet::class, 'idpet', 'idpet');
+    }
+
+public function perawat()
+    {
+    return $this->belongsTo(RoleUser::class, 'idrole_user', 'idrole_user');
+    }
+
+    public function rekamMedis()
+    {
+    return $this->hasOne(RekamMedis::class, 'idreservasi_dokter', 'idreservasi_dokter');
     }
 
     public function roleUser()
-{
-    return $this->belongsTo(\App\Models\RoleUser::class, 'idrole_user', 'idrole_user');
-}
-
+    {
+    return $this->belongsTo(RoleUser::class, 'idrole_user', 'idrole_user');
+    }
 }

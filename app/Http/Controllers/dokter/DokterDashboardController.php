@@ -39,7 +39,7 @@ class DokterDashboardController extends Controller
 
         $jumlah_antrian = DB::table('temu_dokter')
             ->where('idrole_user', $idRoleUser)
-            ->where('status', 0)
+            ->where('status', 2) // perbaikan
             ->count();
 
         $jadwal_hari_ini = DB::table('temu_dokter')

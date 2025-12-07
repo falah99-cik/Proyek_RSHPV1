@@ -21,26 +21,36 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <form action="{{ route('resepsionis.pemilik.store') }}" method="POST">
+            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $err)
+                <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
             @csrf
 
             <div class="mb-3">
                 <label>Nama</label>
-                <input type="text" name="nama" class="form-control">
+                <input type="text" name="nama" class="form-control" value="{{ old('nama') }}">
             </div>
 
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" name="email" class="form-control">
+                <input type="email" name="email" class="form-control" value="{{ old('email') }}">
             </div>
 
             <div class="mb-3">
                 <label>No WA</label>
-                <input type="text" name="no_wa" class="form-control">
+                <input type="text" name="no_wa" class="form-control" value="{{ old('no_wa') }}">
             </div>
 
             <div class="mb-3">
                 <label>Alamat</label>
-                <textarea name="alamat" class="form-control"></textarea>
+                <textarea name="alamat" class="form-control" value="{{ old('alamat') }}"></textarea>
             </div>
 
             <button class="btn btn-primary">Simpan</button>

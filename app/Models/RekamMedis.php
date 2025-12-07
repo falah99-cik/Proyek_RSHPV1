@@ -8,7 +8,6 @@ class RekamMedis extends Model
 {
     protected $table = 'rekam_medis';
     protected $primaryKey = 'idrekam_medis';
-    public $timestamps = false;
 
     protected $fillable = [
         'anamnesa',
@@ -16,22 +15,31 @@ class RekamMedis extends Model
         'diagnosa',
         'idreservasi_dokter',
         'dokter_pemeriksa',
-        'idpet',
-        'created_at'
+        'idpet'
     ];
 
     public function pet()
     {
-        return $this->belongsTo(Pet::class, 'idpet');
+        return $this->belongsTo(Pet::class, 'idpet', 'idpet');
     }
 
-    public function dokterPemeriksa()
-{
-    return $this->belongsTo(Dokter::class, 'dokter_pemeriksa', 'id_dokter');
-}
+public function dokter()
+    {
+    return $this->belongsTo(RoleUser::class, 'dokter_pemeriksa', 'idrole_user');
+    }
 
-public function detail()
-{
+    public function detail()
+    {
+        return $this->hasMany(DetailRekamMedis::class, 'idrekam_medis', 'idrekam_medis');
+    }
+
+    public function temuDokter()
+    {
+        return $this->belongsTo(TemuDokter::class, 'idreservasi_dokter', 'idreservasi_dokter');
+    }
+
+    public function tindakan()
+    {
     return $this->hasMany(DetailRekamMedis::class, 'idrekam_medis');
-}
+    }
 }

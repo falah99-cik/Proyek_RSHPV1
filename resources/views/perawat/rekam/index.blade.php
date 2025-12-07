@@ -1,53 +1,77 @@
 @extends('layouts.lte.main')
-@section('title','Rekam Medis')
+
+@section('title', 'Rekam Medis')
 
 @section('content-header')
-<div class="row align-items-center">
-
+<div class="row">
     <div class="col-sm-6">
-        <h3 class="mb-0">Rekam Medis</h3>
+        <h3>Rekam Medis</h3>
     </div>
-
     <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-end mb-0">
+        <ol class="breadcrumb float-sm-end">
             <li class="breadcrumb-item"><a href="{{ route('perawat.dashboard') }}">Dashboard</a></li>
             <li class="breadcrumb-item active">Rekam Medis</li>
         </ol>
     </div>
-
 </div>
 @endsection
 
 @section('content')
-<div class="card shadow">
-    <div class="card-header bg-primary text-white d-flex justify-content-between">
-        <h5 class="card-title mb-0">Daftar Rekam Medis</h5>
-        <a href="{{ route('perawat.rekam.create') }}" class="btn btn-light">+ Tambah Rekam</a>
-    </div>
+<div class="card shadow-sm">
 
     <div class="card-body table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
+
+        {{-- NOTIFIKASI --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{ session('success') }}
+                <button class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <th>Tanggal</th>
-                    <th>Pasien</th>
+                    <th>ID RM</th>
+                    <th>Pet</th>
                     <th>Anamnesa</th>
-                    <th>Aksi</th>
+                    <th>Temuan Klinis</th>
+                    <th>Diagnosa</th>
+                    <th width="120">Aksi</th>
                 </tr>
             </thead>
+
             <tbody>
-                @foreach($rekam as $r)
+                @forelse ($rm as $r)
                 <tr>
-                    <td>{{ $r->created_at }}</td>
+                    <td>{{ $r->idrekam_medis }}</td>
                     <td>{{ $r->pet->nama }}</td>
-                    <td>{{ $r->anamnesa }}</td>
+                    <td>{{ Str::limit($r->anamnesa, 20) }}</td>
+                    <td>{{ Str::limit($r->temuan_klinis, 20) }}</td>
+                    <td>{{ Str::limit($r->diagnosa, 20) }}</td>
+
                     <td>
-                        <a href="{{ route('perawat.rekam.show', $r->idrekam_medis) }}" class="btn btn-info btn-sm">Detail</a>
+                        <a href="{{ route('perawat.rekam.edit', $r->idrekam_medis) }}"
+                           class="btn btn-warning btn-sm">Edit</a>
+
+                        <form action="{{ route('perawat.rekam.destroy', $r->idrekam_medis) }}"
+                              method="POST" class="d-inline"
+                              onsubmit="return confirm('Hapus RM?');">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
                     </td>
                 </tr>
-                @endforeach
+
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Belum ada Rekam Medis</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
     </div>
+
 </div>
 @endsection

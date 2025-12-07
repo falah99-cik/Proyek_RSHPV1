@@ -18,7 +18,7 @@ class DetailRekamMedis extends Model
 
     public function rekamMedis()
     {
-        return $this->belongsTo(RekamMedis::class, 'idrekam_medis');
+        return $this->belongsTo(RekamMedis::class, 'idrekam_medis', 'idrekam_medis');
     }
 
     public function kode()

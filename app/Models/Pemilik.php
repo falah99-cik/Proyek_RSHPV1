@@ -10,9 +10,15 @@ class Pemilik extends Model
     protected $primaryKey = 'idpemilik';
     public $timestamps = false;
 
+    protected $fillable = [
+        'no_wa',
+        'alamat',
+        'iduser',
+    ];
+
     public function user()
     {
-        return $this->belongsTo(User::class, 'iduser');
+        return $this->belongsTo(User::class, 'iduser', 'iduser');
     }
 
     public function pets()
