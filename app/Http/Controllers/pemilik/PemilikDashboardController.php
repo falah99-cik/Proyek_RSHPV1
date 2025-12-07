@@ -3,31 +3,38 @@
 namespace App\Http\Controllers\pemilik;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Pemilik;
 use App\Models\Pet;
-use Illuminate\Support\Facades\Auth;
+use App\Models\RekamMedis;
+use App\Models\TemuDokter;
 
 class PemilikDashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $pemilik = Pemilik::where('iduser', Auth::id())->first();
 
-        // Cari data pemilik berdasarkan iduser
-        $pemilik = Pemilik::where('iduser', $user->iduser)->first();
+        // Jumlah Pet dimiliki
+        $jumlahPet = Pet::where('idpemilik', $pemilik->idpemilik)->count();
 
-        // Ambil semua pet miliknya
-        $pets = Pet::with(['jenisHewan', 'rasHewan'])
-            ->where('idpemilik', $pemilik->idpemilik ?? 0)
-            ->get();
+        // Jadwal berlangsung (status 0 / 1 / 2)
+        $jadwalAktif = TemuDokter::whereHas('pet', function ($q) use ($pemilik) {
+                $q->where('idpemilik', $pemilik->idpemilik);
+            })
+            ->whereIn('status', [0,1,2])
+            ->count();
 
-        // Hitung
-        $jumlahPet = $pets->count();
+        // Rekam Medis
+        $rekamTotal = RekamMedis::whereHas('pet', function ($q) use ($pemilik) {
+            $q->where('idpemilik', $pemilik->idpemilik);
+        })->count();
 
-        return view('pemilik.dashboard', compact(
+        return view('pemilik.dashboard.index', compact(
+            'pemilik',
             'jumlahPet',
-            'pets',
-            'pemilik'
+            'jadwalAktif',
+            'rekamTotal'
         ));
     }
 }

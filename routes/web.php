@@ -23,6 +23,9 @@ use App\Http\Controllers\dokter\DokterProfilController;
 use App\Http\Controllers\dokter\DokterDetailRMController;
 
 use App\Http\Controllers\pemilik\PemilikDashboardController;
+use App\Http\Controllers\pemilik\PemilikTemuDokterController;
+use App\Http\Controllers\pemilik\PemilikProfilController;
+use App\Http\Controllers\pemilik\PemilikRekamMedisController;
 
 use App\Http\Controllers\perawat\PerawatDashboardController;
 use App\Http\Controllers\perawat\PerawatProfilController;
@@ -193,7 +196,10 @@ Route::middleware(['auth', 'isDokter'])
     });
 
 
-Route::middleware(['auth', 'isPemilik'])->group(function () {
+Route::middleware(['auth', 'isPemilik'])
+    ->prefix('pemilik')
+    ->name('pemilik.')
+    ->group(function () {
     Route::get('/dashboard', [PemilikDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/jadwal-temu', [PemilikTemuDokterController::class, 'index'])->name('jadwal.index');

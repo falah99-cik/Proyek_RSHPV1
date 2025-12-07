@@ -33,4 +33,9 @@ class Pet extends Model
     return $this->hasMany(RekamMedis::class, 'idpet');
     }
 
+    public function rasHewan()
+{
+    return $this->belongsTo(RasHewan::class, 'idras_hewan', 'idras_hewan');
+}
+
 }

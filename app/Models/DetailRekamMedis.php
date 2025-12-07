@@ -25,4 +25,9 @@ class DetailRekamMedis extends Model
     {
         return $this->belongsTo(KodeTindakanTerapi::class, 'idkode_tindakan_terapi');
     }
+
+    public function kodeTindakan()
+{
+    return $this->belongsTo(KodeTindakanTerapi::class, 'idkode_tindakan_terapi', 'idkode_tindakan_terapi');
+}
 }
