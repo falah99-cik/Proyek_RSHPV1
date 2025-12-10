@@ -52,8 +52,7 @@
                 {{-- STATUS --}}
                 <div class="mb-3">
                     <label class="form-label">Status</label>
-                    <select class="form-control" name="status">
-                        <option value="1">Selesai</option>
+                    <select class="form-control" name="status">>
                         <option value="0">Menunggu</option>
                     </select>
                 </div>

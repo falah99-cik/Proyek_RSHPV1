@@ -63,10 +63,14 @@
 
                             {{-- STATUS --}}
                             <td class="text-center">
-                                @if($item->status == '1')
+                                @if($item->status == '0')
+                                    <span class="badge bg-secondary">Menunggu</span>
+                                @elseif ($item->status == '1')
+                                    <span class="badge bg-warning">Diproses Perawat</span>
+                                @elseif ($item->status == '2')
+                                    <span class="badge bg-info">Menunggu Dokter</span>
+                                @elseif ($item->status == '3')
                                     <span class="badge bg-success">Selesai</span>
-                                @else
-                                    <span class="badge bg-warning text-dark">Menunggu</span>
                                 @endif
                             </td>
 

@@ -27,7 +27,7 @@
     <div class="col-md-4">
         <div class="small-box bg-success">
             <div class="inner">
-                <h3>{{ $antrianAktif }}</h3>
+                <h3>{{ $antrianAktif->count() }}</h3>
                 <p>Menunggu Pemeriksaan</p>
             </div>
             <div class="icon"><i class="fas fa-paw"></i></div>
@@ -37,7 +37,7 @@
     <div class="col-md-4">
         <div class="small-box bg-info">
             <div class="inner">
-                <h3>{{ $todayRegistrations->first()->no_urut ?? '-' }}</h3>
+                <h3>{{ $todayRegistrations->no_urut ?? '-' }}</h3>
                 <p>Pendaftaran Baru</p>
             </div>
             <div class="icon"><i class="fas fa-user-plus"></i></div>

@@ -10,6 +10,10 @@ class KategoriKlinis extends Model
     protected $primaryKey = 'idkategori_klinis';
     public $timestamps = false;
 
+    protected $fillable = [
+        'nama_kategori_klinis',
+    ];
+
     public function tindakan()
     {
         return $this->hasMany(KodeTindakanTerapi::class, 'idkategori_klinis');

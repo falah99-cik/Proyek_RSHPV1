@@ -12,6 +12,7 @@ class RekamMedis extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'created_at',
         'anamnesa',
         'temuan_klinis',
         'diagnosa',
