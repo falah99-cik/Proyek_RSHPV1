@@ -48,6 +48,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isPerawat'     => \App\Http\Middleware\IsPerawat::class,
             'isResepsionis' => \App\Http\Middleware\IsResepsionis::class,
             'isPemilik'     => \App\Http\Middleware\IsPemilik::class,
+
+            'dokter.profile' => \App\Http\Middleware\CheckDokterProfile::class,
+            'perawat.profile'=> \App\Http\Middleware\CheckPerawatProfile::class,
         ]);
 
     })

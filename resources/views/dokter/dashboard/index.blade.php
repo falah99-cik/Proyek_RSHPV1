@@ -19,6 +19,18 @@
 @endsection
 
 @section('content')
+@if(session('dokter_profile_incomplete'))
+    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+        <div>
+            <strong>Profil belum lengkap.</strong>
+            Silakan lengkapi identitas dokter untuk mengakses seluruh fitur.
+        </div>
+        <a href="{{ route('dokter.profil.create') }}"
+           class="btn btn-sm btn-warning">
+            Lengkapi Profil
+        </a>
+    </div>
+@endif
 <div class="container-fluid px-4 mt-4">
 
     {{-- === STATISTIK === --}}

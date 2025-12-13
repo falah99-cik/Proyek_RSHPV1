@@ -11,7 +11,9 @@
 
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end mb-0">
-            <li class="breadcrumb-item"><a href="{{ route('perawat.dashboard') }}">Dashboard</a></li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('perawat.dashboard') }}">Dashboard</a>
+            </li>
             <li class="breadcrumb-item active">Profil</li>
         </ol>
     </div>
@@ -30,11 +32,17 @@
 
                 {{-- FOTO PROFIL --}}
                 <div class="col-md-3 text-center">
-                    <img src="{{ $user->foto ? asset('uploads/perawat/'.$user->foto) : asset('assets/adminlte/img/user.png') }}"
-                         class="img-thumbnail rounded-circle mb-3"
-                         style="width: 160px; height: 160px; object-fit: cover;">
+                    <img
+                        src="{{ auth()->user()->foto
+                            ? asset('uploads/perawat/' . auth()->user()->foto)
+                            : asset('assets/adminlte/img/user.png') }}"
+                        class="img-thumbnail rounded-circle mb-3"
+                        style="width: 160px; height: 160px; object-fit: cover;"
+                    >
 
-                    <h5 class="fw-bold mt-2">{{ $user->nama }}</h5>
+                    <h5 class="fw-bold mt-2">
+                        {{ auth()->user()->nama }}
+                    </h5>
                     <p class="text-muted">Perawat Hewan</p>
                 </div>
 
@@ -47,17 +55,23 @@
 
                         <div class="col-md-6 mb-3">
                             <p class="mb-1 fw-bold">Nama Lengkap</p>
-                            <p class="text-muted">{{ $user->nama }}</p>
+                            <p class="text-muted">
+                                {{ auth()->user()->nama }}
+                            </p>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <p class="mb-1 fw-bold">Email</p>
-                            <p class="text-muted">{{ $user->email }}</p>
+                            <p class="text-muted">
+                                {{ auth()->user()->email }}
+                            </p>
                         </div>
 
                         <div class="col-md-6 mb-3">
                             <p class="mb-1 fw-bold">Nomor HP</p>
-                            <p class="text-muted">{{ $perawat->no_hp ?? '-' }}</p>
+                            <p class="text-muted">
+                                {{ $perawat->no_hp ?? '-' }}
+                            </p>
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -67,12 +81,16 @@
 
                         <div class="col-md-6 mb-3">
                             <p class="mb-1 fw-bold">Pendidikan</p>
-                            <p class="text-muted">{{ $perawat->pendidikan ?? '-' }}</p>
+                            <p class="text-muted">
+                                {{ $perawat->pendidikan ?? '-' }}
+                            </p>
                         </div>
 
                         <div class="col-md-12 mb-3">
                             <p class="mb-1 fw-bold">Alamat</p>
-                            <p class="text-muted">{{ $perawat->alamat ?? '-' }}</p>
+                            <p class="text-muted">
+                                {{ $perawat->alamat ?? '-' }}
+                            </p>
                         </div>
 
                     </div>
